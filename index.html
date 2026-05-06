@@ -1,4 +1,4 @@
-<!doctype html>
+           <!doctype html>
 <html lang="it">
 <head>
 <meta charset="utf-8" />
@@ -9,19 +9,16 @@
     --bg:#0f0b1a;
     --card:#121025;
     --muted:#9aa0b4;
-    --primary:#6a4cff; /* indaco/viola */
-    --primary-600:#5a3be6;
+    --primary:#6a4cff;
     --accent:#8b5cf6;
     --success:#16a34a;
     --danger:#ef4444;
     --glass: rgba(255,255,255,0.03);
     --radius:12px;
-    --gap:14px;
     font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     color-scheme: dark;
   }
   html,body{height:100%;margin:0;background:linear-gradient(180deg,#07050f 0%, #0b0820 100%);color:#e6e9f2}
-  /* Layout */
   header{
     position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;
     background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
@@ -33,7 +30,6 @@
   .btn{background:var(--primary);border:none;color:white;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600}
   .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04)}
   .container{display:flex;gap:16px;padding:84px 16px 24px;max-width:1100px;margin:0 auto}
-  /* Sidebar */
   aside{width:260px;min-width:220px;background:var(--card);border-radius:var(--radius);padding:12px;box-shadow:0 6px 20px rgba(0,0,0,0.6)}
   .section-title{font-size:13px;color:var(--muted);margin:6px 6px 10px}
   .subjects{display:flex;flex-direction:column;gap:8px}
@@ -43,14 +39,12 @@
   .archive{margin-top:18px;padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
   .archive .row{display:flex;justify-content:space-between;padding:6px 0;color:var(--muted)}
   .empty-note{color:var(--muted);font-size:13px;padding:8px 0}
-  /* Main area */
   main{flex:1;display:flex;flex-direction:column;gap:12px}
   .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .chips{display:flex;gap:8px}
   .chip{padding:8px 12px;border-radius:999px;background:transparent;border:1px solid rgba(255,255,255,0.04);cursor:pointer;color:var(--muted)}
   .chip.active{background:linear-gradient(90deg,var(--primary),var(--accent));color:white;border:none}
   .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,0.6)}
-  /* Question card */
   .q-card{min-height:220px;display:flex;flex-direction:column;gap:12px}
   .progress{height:8px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden}
   .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%}
@@ -68,12 +62,10 @@
   .explanation{margin-top:8px;color:var(--muted);font-size:14px}
   .controls-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
   .small{font-size:13px;color:var(--muted)}
-  /* Results */
   .results{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
   .percent{font-size:56px;font-weight:800;color:var(--primary)}
   .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
   .stat{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;text-align:center}
-  /* Edit panel modal */
   .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:linear-gradient(180deg, rgba(2,2,6,0.6), rgba(2,2,6,0.6));z-index:60}
   .modal.open{display:flex}
   .modal .panel{width:920px;max-width:96%;max-height:86vh;overflow:auto;background:linear-gradient(180deg,#0b0a16,#0f0d22);padding:18px;border-radius:14px}
@@ -81,22 +73,22 @@
   .tab{padding:8px 12px;border-radius:10px;cursor:pointer;background:transparent;border:1px solid rgba(255,255,255,0.03)}
   .tab.active{background:linear-gradient(90deg,var(--primary),var(--accent));color:white;border:none}
   .form-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-  input[type="text"], textarea, select{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;color:inherit;flex:1}
+  input[type="text"], input[type="password"], textarea, select{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;color:inherit;flex:1}
   textarea{min-height:80px;resize:vertical}
   .option-row{display:flex;gap:8px;align-items:center}
   .option-row input[type="text"]{flex:1}
   .small-ghost{background:transparent;border:1px dashed rgba(255,255,255,0.04);padding:6px 8px;border-radius:8px;color:var(--muted)}
   .chip-subject{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02)}
-  /* Responsive */
+  .import-preview{max-height:220px;overflow:auto;border:1px solid rgba(255,255,255,0.03);padding:8px;border-radius:8px;background:rgba(255,255,255,0.01)}
+  .import-row{display:flex;gap:8px;align-items:center;padding:6px;border-bottom:1px solid rgba(255,255,255,0.02)}
+  .muted{color:var(--muted)}
+  .hidden{display:none}
   @media (max-width:880px){
     .container{flex-direction:column;padding:84px 12px 24px}
     aside{width:100%}
     main{width:100%}
     .logo .text{display:none}
   }
-  /* tiny helpers */
-  .muted{color:var(--muted)}
-  .hidden{display:none}
 </style>
 </head>
 <body>
@@ -135,11 +127,16 @@
         <button class="chip" data-filter="mcq" id="chip-mcq">Solo Quiz</button>
         <button class="chip" data-filter="open" id="chip-open">Solo Aperte</button>
       </div>
-      <div style="margin-left:auto" class="small muted" id="active-subject-label">Seleziona una materia</div>
+
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <div class="small muted" id="active-subject-label">Seleziona una materia</div>
+        <button class="btn ghost" id="btn-start" title="Inizia quiz">Inizia</button>
+        <button class="btn ghost" id="btn-end" title="Termina quiz" style="display:none;background:linear-gradient(90deg,#ef4444,#ff7b7b)">Termina</button>
+        <button class="btn ghost" id="btn-restart" title="Ricomincia" style="display:none">Ricomincia</button>
+      </div>
     </div>
 
     <div id="main-area" class="card">
-      <!-- Area dinamica: schermata quiz / risultati -->
       <div id="quiz-screen" class="q-card">
         <div class="progress" aria-hidden="true"><i id="progress-bar"></i></div>
         <div class="q-meta">
@@ -148,9 +145,7 @@
         </div>
         <div class="q-text" id="q-text">Seleziona una materia per iniziare.</div>
 
-        <div id="q-body">
-          <!-- opzioni o campo aperto -->
-        </div>
+        <div id="q-body"></div>
 
         <div class="controls-bottom">
           <div class="small" id="feedback-badge"></div>
@@ -185,7 +180,6 @@
   </main>
 </div>
 
-<!-- Modal Modifica -->
 <div class="modal" id="modal">
   <div class="panel">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
@@ -199,6 +193,7 @@
       <button class="tab active" data-tab="add">Aggiungi</button>
       <button class="tab" data-tab="list">Domande</button>
       <button class="tab" data-tab="import">Importa/Esporta</button>
+      <button class="tab" data-tab="sync">Sincronizza</button>
       <button class="tab" data-tab="subjects">Materie</button>
     </div>
 
@@ -244,6 +239,37 @@
           <button class="btn ghost" id="export-csv">Esporta CSV</button>
         </div>
         <div class="muted" style="margin-top:8px">Formato JSON modello: array di oggetti { "subject":"Nome","type":"mcq|open","question":"...","options":["a","b"],"answer":0,"solution":"...","explanation":"..." }</div>
+
+        <div style="margin-top:12px">
+          <div class="muted">Anteprima import</div>
+          <div class="import-preview" id="import-preview">Nessun file caricato</div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <select id="import-map-subject"></select>
+            <button class="btn ghost" id="import-apply">Importa selezionati</button>
+            <button class="btn ghost" id="import-clear">Annulla anteprima</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-sync" class="tab-panel hidden">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="muted">Sincronizzazione con GitHub (opzionale)</div>
+        <div class="muted">Nota: non memorizzare token in chiaro su repo pubblici. Inserisci il token solo per la sessione.</div>
+        <div class="form-row">
+          <input type="text" id="gh-owner" placeholder="Owner (es. tuo-username)">
+          <input type="text" id="gh-repo" placeholder="Repo (es. quiz4uni-repo)">
+        </div>
+        <div class="form-row">
+          <input type="text" id="gh-path" placeholder="Percorso file (es. data/questions.json)">
+          <input type="password" id="gh-token" placeholder="Personal Access Token (inserisci qui)">
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn" id="gh-save">Salva su GitHub</button>
+          <button class="btn ghost" id="gh-load">Carica da GitHub</button>
+          <button class="btn ghost" id="gh-clear-token">Cancella token sessione</button>
+        </div>
+        <div id="gh-status" class="muted" style="margin-top:8px">Stato: inattivo</div>
       </div>
     </div>
 
@@ -260,44 +286,38 @@
 </div>
 
 <script>
-/*
-  Quiz4uni - Single-file app
-  Storage keys:
-    quiz4uni_data -> { subjects: [...], questions: [...] }
-    quiz4uni_sessions -> [ {subject,score,total,percent,date} ]
+/* Quiz4uni definitivo con sincronizzazione GitHub opzionale
+   - Salvataggio locale: localStorage key QUIZ4UNI_DATA
+   - Cronologia sessioni: localStorage key QUIZ4UNI_SESSIONS
+   - GitHub sync: usa token inserito dall'utente (non memorizzato per default)
 */
-const STORAGE_KEY = 'quiz4uni_data';
-const SESSIONS_KEY = 'quiz4uni_sessions';
+
+const STORAGE_KEY = 'QUIZ4UNI_DATA';
+const SESSIONS_KEY = 'QUIZ4UNI_SESSIONS';
 
 let state = {
-  subjects: [], // array of strings
-  questions: [], // {id,subject,type,question,options[],answer(index),solution,explanation}
+  subjects: [],
+  questions: [],
   activeSubject: null,
-  filter: 'both', // both | mcq | open
-  session: { order: [], index: 0, answers: [] }, // runtime
-  lastSessionForSubject: null
+  filter: 'both',
+  session: { order: [], index: 0, answers: [], running:false, subject:null }
 };
 
-// Utilities
+// helpers
 const uid = ()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 const el = id=>document.getElementById(id);
 const saveData = ()=>localStorage.setItem(STORAGE_KEY, JSON.stringify({subjects:state.subjects,questions:state.questions}));
 const loadData = ()=>{
   const raw = localStorage.getItem(STORAGE_KEY);
-  if(raw) {
+  if(raw){
     try{
       const parsed = JSON.parse(raw);
       state.subjects = parsed.subjects || [];
       state.questions = parsed.questions || [];
-    }catch(e){ console.warn('load error',e) }
+    }catch(e){ console.warn('load error',e); state.subjects=[]; state.questions=[]; }
   } else {
-    // seed with an example subject to avoid empty UI
-    state.subjects = ['Matematica'];
-    state.questions = [
-      {id:uid(),subject:'Matematica',type:'mcq',question:'Qual è il risultato di 2+2?',options:['3','4','5'],answer:1,explanation:'2+2 = 4'},
-      {id:uid(),subject:'Matematica',type:'open',question:'Definisci integrale indefinito.',solution:'Antiderivata di una funzione',explanation:'Risposta modello: antiderivata'}
-    ];
-    saveData();
+    state.subjects = [];
+    state.questions = [];
   }
 };
 const saveSession = (rec)=>{
@@ -307,6 +327,8 @@ const saveSession = (rec)=>{
 };
 const getSessions = ()=>JSON.parse(localStorage.getItem(SESSIONS_KEY) || '[]');
 
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; }
+
 // UI rendering
 function renderSubjects(){
   const list = el('subjects-list'); list.innerHTML='';
@@ -314,26 +336,25 @@ function renderSubjects(){
     const count = state.questions.filter(q=>q.subject===s).length;
     const item = document.createElement('div');
     item.className='subject'+(state.activeSubject===s?' active':'');
-    item.innerHTML = `<div style="display:flex;gap:8px;align-items:center"><div style="width:8px;height:8px;border-radius:4px;background:var(--primary)"></div><div>${s}</div></div><div class="badge">${count}</div>`;
-    item.onclick = ()=>{ selectSubject(s); };
+    item.innerHTML = `<div style="display:flex;gap:8px;align-items:center"><div style="width:8px;height:8px;border-radius:4px;background:var(--primary)"></div><div>${s}</div></div><div style="display:flex;gap:8px;align-items:center"><div class="badge">${count}</div><button class="small-ghost" data-sub="${s}" title="Seleziona">Seleziona</button></div>`;
+    item.querySelector('button').onclick = (ev)=>{ ev.stopPropagation(); selectSubject(s); };
+    item.onclick = ()=>selectSubject(s);
     list.appendChild(item);
   });
-  // if no subjects
   if(state.subjects.length===0){
     list.innerHTML = '<div class="muted">Nessuna materia. Apri Modifica → Materie</div>';
   }
-  // populate selects in edit panel
-  const addSub = el('add-subject'); const filterList = el('filter-list-subject'); const addSubSelect = el('add-subject');
-  [addSub, filterList, el('add-subject')].forEach(sel=>{
+  // populate selects
+  ['add-subject','filter-list-subject','import-map-subject'].forEach(id=>{
+    const sel = el(id);
     if(!sel) return;
     sel.innerHTML = '';
     state.subjects.forEach(s=>{
       const opt = document.createElement('option'); opt.value=s; opt.textContent=s; sel.appendChild(opt);
     });
   });
-  // subjects chips in edit tab
-  const chips = el('subjects-chips'); chips.innerHTML='';
-  state.subjects.forEach(s=>{
+  // chips
+  const chips = el('subjects-chips'); if(chips){ chips.innerHTML=''; state.subjects.forEach(s=>{
     const chip = document.createElement('div'); chip.className='chip-subject';
     chip.innerHTML = `<span>${s}</span><button class="small-ghost" data-sub="${s}">✕</button>`;
     chip.querySelector('button').onclick = (ev)=>{
@@ -346,7 +367,7 @@ function renderSubjects(){
       }
     };
     chips.appendChild(chip);
-  });
+  }); }
 }
 
 function renderArchive(){
@@ -358,14 +379,15 @@ function renderArchive(){
   el('archive-open').textContent = open;
   el('archive-empty').classList.toggle('hidden', total>0);
   el('active-subject-label').textContent = state.activeSubject ? state.activeSubject : 'Seleziona una materia';
-  // header last session for active subject
   const sessions = getSessions().filter(s=>s.subject===state.activeSubject);
   if(sessions.length>0){
     const last = sessions[sessions.length-1];
-    el('last-session').textContent = `Ultima: ${last.percent}% (${last.correct}/${last.total}) ${new Date(last.date).toLocaleString()}`;
+    el('last-session').textContent = `Ultima: ${last.percent}% (${last.score}/${last.total}) ${new Date(last.date).toLocaleString()}`;
   } else {
     el('last-session').textContent = 'Nessuna sessione';
   }
+  el('btn-start').disabled = !state.activeSubject || total===0;
+  el('btn-restart').style.display = state.activeSubject ? 'inline-block' : 'none';
 }
 
 function renderMainMessage(msg){
@@ -382,15 +404,19 @@ function renderMainMessage(msg){
   el('results-screen').classList.add('hidden');
 }
 
-// Select subject
+// subject selection
 function selectSubject(s){
+  if(state.session.running && state.session.subject && state.session.subject!==s){
+    if(!confirm('Cambiare materia terminerà il quiz corrente. Procedere?')) return;
+    endQuiz(true);
+  }
   state.activeSubject = s;
   saveData();
   renderAll();
-  startQuiz();
+  renderMainMessage('Materia selezionata: ' + s + '. Premi Inizia per cominciare il quiz.');
 }
 
-// Build question pool based on active subject and filter
+// pool
 function getPool(){
   if(!state.activeSubject) return [];
   let pool = state.questions.filter(q=>q.subject===state.activeSubject);
@@ -399,22 +425,48 @@ function getPool(){
   return pool;
 }
 
-// Shuffle helper
-function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]} return a; }
-
-// Start quiz
-function startQuiz(customOrder){
+// start quiz
+function startQuiz(){
+  if(!state.activeSubject) return alert('Seleziona una materia prima di iniziare');
   const pool = getPool();
-  if(pool.length===0){
-    renderMainMessage('Archivio vuoto per questa materia e filtro. Vai su Modifica per aggiungere domande.');
-    return;
-  }
-  const order = customOrder || shuffle(pool.map(q=>q.id).slice());
-  state.session = { order, index:0, answers: [] };
+  if(pool.length===0) return alert('Nessuna domanda per questa materia e filtro');
+  const order = shuffle(pool.map(q=>q.id).slice());
+  state.session = { order, index:0, answers: [], running:true, subject: state.activeSubject };
+  el('btn-start').style.display='none';
+  el('btn-end').style.display='inline-block';
+  el('btn-restart').style.display='inline-block';
   renderQuestion();
 }
 
-// Render current question
+// end quiz (force true = silent)
+function endQuiz(force){
+  if(!state.session.running) return;
+  if(!force && !confirm('Terminare il quiz ora e visualizzare i risultati?')) return;
+  const total = state.session.order.length;
+  const answeredIds = state.session.answers.map(a=>a.id);
+  const unanswered = state.session.order.filter(id=>!answeredIds.includes(id));
+  unanswered.forEach(id=>state.session.answers.push({id,correct:false}));
+  state.session.running = false;
+  el('btn-start').style.display='inline-block';
+  el('btn-end').style.display='none';
+  el('btn-restart').style.display='inline-block';
+  showResults();
+}
+
+// restart quiz (new random order)
+function restartQuiz(){
+  if(!state.activeSubject) return;
+  const pool = getPool();
+  if(pool.length===0) return alert('Nessuna domanda per questa materia e filtro');
+  const order = shuffle(pool.map(q=>q.id).slice());
+  state.session = { order, index:0, answers: [], running:true, subject: state.activeSubject };
+  el('btn-start').style.display='none';
+  el('btn-end').style.display='inline-block';
+  el('btn-restart').style.display='inline-block';
+  renderQuestion();
+}
+
+// render question
 function renderQuestion(){
   const idx = state.session.index;
   const total = state.session.order.length;
@@ -435,16 +487,14 @@ function renderQuestion(){
   el('q-text').textContent = q.question;
 
   if(q.type==='mcq'){
-    const opts = q.options.map((o,i)=>({o,i}));
     const container = document.createElement('div'); container.className='options';
-    opts.forEach(({o,i})=>{
+    q.options.forEach((o,i)=>{
       const div = document.createElement('div'); div.className='opt'; div.tabIndex=0;
       div.innerHTML = `<div class="key">${i+1}</div><div style="flex:1">${o}</div>`;
       div.onclick = ()=>handleMcqAnswer(q,i,div);
       container.appendChild(div);
     });
     el('q-body').appendChild(container);
-    // keyboard shortcuts
     window.onkeydown = (e)=>{
       if(document.activeElement && (document.activeElement.tagName==='INPUT' || document.activeElement.tagName==='TEXTAREA')) return;
       if(e.key>='1' && e.key<='9'){
@@ -458,12 +508,10 @@ function renderQuestion(){
       }
     };
   } else {
-    // open question
     const ta = document.createElement('textarea'); ta.placeholder='Scrivi la tua risposta qui...'; ta.style.width='100%';
     el('q-body').appendChild(ta);
     const showSol = el('show-solution'); showSol.style.display='inline-block';
     showSol.onclick = ()=>{
-      // show solution and self-eval buttons
       const sol = document.createElement('div'); sol.className='explanation'; sol.innerHTML = `<strong>Soluzione modello:</strong> ${q.solution || '—'}`;
       el('q-body').appendChild(sol);
       const evalRow = document.createElement('div'); evalRow.style.display='flex'; evalRow.style.gap='8px'; evalRow.style.marginTop='8px';
@@ -475,36 +523,30 @@ function renderQuestion(){
       bad.onclick = ()=>finalizeOpenAnswer(false);
       showSol.style.display='none';
     };
-    // Enter to show solution
     window.onkeydown = (e)=>{ if(e.key==='Enter' && document.activeElement===ta){ e.preventDefault(); el('show-solution').click(); } };
   }
 }
 
-// Handle MCQ answer
+// MCQ answer
 function handleMcqAnswer(q,choice,div){
-  // disable further clicks
   const opts = el('q-body').querySelectorAll('.opt');
   opts.forEach(o=>o.onclick=null);
-  // mark correct/wrong
   opts.forEach((o,idx)=>{
     if(idx===q.answer) o.classList.add('correct');
     if(idx===choice && idx!==q.answer) o.classList.add('wrong');
   });
   const correct = choice===q.answer;
   el('feedback-badge').innerHTML = `<span class="feedback ${correct?'ok':'bad'}">${correct?'Risposta corretta':'Risposta sbagliata'}</span>`;
-  // show explanation if any
   if(q.explanation) {
     const ex = document.createElement('div'); ex.className='explanation'; ex.textContent = q.explanation;
     el('q-body').appendChild(ex);
   }
-  // record answer
   state.session.answers.push({id:q.id,correct});
   el('next-btn').style.display='inline-block';
-  // next button
   el('next-btn').onclick = ()=>advance();
 }
 
-// Finalize open answer (manual)
+// open finalize
 function finalizeOpenAnswer(correct){
   const qid = state.session.order[state.session.index];
   state.session.answers.push({id:qid,correct});
@@ -518,18 +560,21 @@ function finalizeOpenAnswer(correct){
   el('next-btn').onclick = ()=>advance();
 }
 
-// Advance to next or finish
+// advance
 function advance(){
   state.session.index++;
   if(state.session.index >= state.session.order.length){
-    // finish
+    state.session.running = false;
+    el('btn-start').style.display='inline-block';
+    el('btn-end').style.display='none';
+    el('btn-restart').style.display='inline-block';
     showResults();
   } else {
     renderQuestion();
   }
 }
 
-// Show results
+// show results
 function showResults(){
   const total = state.session.order.length;
   const correct = state.session.answers.filter(a=>a.correct).length;
@@ -541,14 +586,15 @@ function showResults(){
   el('res-wrong').textContent = wrong;
   el('quiz-screen').classList.add('hidden');
   el('results-screen').classList.remove('hidden');
-  // save session
   const rec = { subject: state.activeSubject, score: correct, total, percent, date: new Date().toISOString(), wrongIds: state.session.answers.filter(a=>!a.correct).map(a=>a.id) };
   saveSession(rec);
   renderArchive();
-  // buttons
   el('repeat-errors').onclick = ()=>{
     if(rec.wrongIds.length===0){ alert('Nessun errore da ripetere'); return; }
-    state.session = { order: shuffle(rec.wrongIds.slice()), index:0, answers: [] };
+    state.session = { order: shuffle(rec.wrongIds.slice()), index:0, answers: [], running:true, subject: state.activeSubject };
+    el('btn-start').style.display='none';
+    el('btn-end').style.display='inline-block';
+    el('btn-restart').style.display='inline-block';
     renderQuestion();
   };
   el('restart-all').onclick = ()=>{ startQuiz(); };
@@ -561,13 +607,12 @@ el('close-modal').onclick = ()=>{ modal.classList.remove('open'); };
 document.querySelectorAll('.tab').forEach(t=>t.onclick = ()=>renderEditTabs(t.dataset.tab));
 function renderEditTabs(tab){
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
-  ['add','list','import','subjects'].forEach(k=>el('tab-'+k).classList.toggle('hidden', k!==tab));
-  // populate selects
+  ['add','list','import','sync','subjects'].forEach(k=>el('tab-'+k).classList.toggle('hidden', k!==tab));
   renderSubjects();
   renderQuestionsList();
 }
 
-// Add subject
+// subjects
 el('add-subject-btn').onclick = ()=>{
   const v = el('new-subject').value.trim();
   if(!v) return alert('Inserisci nome materia');
@@ -577,26 +622,23 @@ el('add-subject-btn').onclick = ()=>{
   saveData(); renderSubjects();
 };
 
-// Add option editor
+// options editor
 function createOptionRow(text='',checked=false){
-  const id = uid();
   const row = document.createElement('div'); row.className='option-row';
   row.innerHTML = `<input type="radio" name="opt-correct" ${checked?'checked':''} style="margin-right:8px"><input type="text" value="${text}" placeholder="Opzione"><button class="small-ghost">✕</button>`;
   row.querySelector('button').onclick = ()=>row.remove();
   return row;
 }
-el('add-option').onclick = ()=>{
-  el('options-list').appendChild(createOptionRow(''));
-};
+el('add-option').onclick = ()=> el('options-list').appendChild(createOptionRow('','false'));
 
-// Toggle type editor
+// toggle type
 el('add-type').onchange = (e)=>{
   const v = e.target.value;
   el('mcq-editor').classList.toggle('hidden', v!=='mcq');
   el('open-editor').classList.toggle('hidden', v!=='open');
 };
 
-// Save question
+// save question
 el('save-question').onclick = ()=>{
   const subject = el('add-subject').value;
   if(!subject) return alert('Seleziona materia');
@@ -617,13 +659,12 @@ el('save-question').onclick = ()=>{
     const q = { id:uid(), subject, type:'open', question, solution, explanation };
     state.questions.push(q);
   }
-  // clear form
   el('add-question').value=''; el('add-explanation').value=''; el('options-list').innerHTML='';
   saveData(); renderSubjects(); renderQuestionsList();
   alert('Domanda salvata');
 };
 
-// Render questions list in edit tab
+// render questions list
 function renderQuestionsList(){
   const list = el('questions-list'); list.innerHTML='';
   const filter = el('filter-list-subject').value || state.subjects[0];
@@ -639,7 +680,7 @@ function renderQuestionsList(){
   if(items.length===0) list.innerHTML = '<div class="muted">Nessuna domanda</div>';
 }
 
-// Import/export
+// import/export improved
 el('download-json-model').onclick = ()=>{
   const model = [
     {subject:'Esempio',type:'mcq',question:'Domanda esempio MCQ',options:['A','B','C'],answer:0,explanation:'Spiegazione'},
@@ -649,21 +690,22 @@ el('download-json-model').onclick = ()=>{
 };
 el('export-json').onclick = ()=>downloadFile('quiz4uni-export.json', JSON.stringify(state.questions, null, 2));
 el('export-csv').onclick = ()=>downloadFile('quiz4uni-export.csv', questionsToCSV(state.questions));
+
+let importBuffer = [];
 el('import-file').onchange = async (e)=>{
   const f = e.target.files[0]; if(!f) return;
   const txt = await f.text();
   try{
     if(f.name.endsWith('.json')){
       const parsed = JSON.parse(txt);
-      importQuestionsArray(parsed);
+      prepareImportPreview(parsed);
     } else if(f.name.endsWith('.csv')){
       const parsed = csvToQuestions(txt);
-      importQuestionsArray(parsed);
+      prepareImportPreview(parsed);
     } else {
-      // txt: try JSON lines or simple format
       try{
         const parsed = JSON.parse(txt);
-        importQuestionsArray(parsed);
+        prepareImportPreview(parsed);
       }catch{
         alert('Formato txt non riconosciuto. Usa JSON o CSV.');
       }
@@ -672,30 +714,79 @@ el('import-file').onchange = async (e)=>{
   e.target.value='';
 };
 
-function importQuestionsArray(arr){
+function prepareImportPreview(arr){
   if(!Array.isArray(arr)) return alert('Formato import non valido');
+  importBuffer = arr.map(item=>{
+    return {
+      ok: !!item.question && !!item.type,
+      raw: item,
+      mapped: {
+        subject: item.subject || '',
+        type: item.type || '',
+        question: item.question || '',
+        options: item.options || [],
+        answer: typeof item.answer==='number' ? item.answer : null,
+        solution: item.solution || '',
+        explanation: item.explanation || ''
+      },
+      selected: true
+    };
+  });
+  renderImportPreview();
+}
+
+function renderImportPreview(){
+  const box = el('import-preview'); box.innerHTML='';
+  if(importBuffer.length===0){ box.textContent='Nessun file caricato'; return; }
+  importBuffer.forEach((row,idx)=>{
+    const div = document.createElement('div'); div.className='import-row';
+    div.innerHTML = `<input type="checkbox" ${row.selected?'checked':''} data-idx="${idx}"><div style="flex:1"><div style="font-weight:700">${escapeHtml(row.mapped.question)}</div><div class="muted" style="font-size:12px">${escapeHtml(row.mapped.subject)} • ${escapeHtml(row.mapped.type)}</div></div><div style="display:flex;gap:8px"><button class="small-ghost" data-idx="${idx}">Modifica</button></div>`;
+    div.querySelector('input').onchange = (e)=>{ importBuffer[idx].selected = e.target.checked; };
+    div.querySelector('button').onclick = ()=>editImportRow(idx);
+    box.appendChild(div);
+  });
+  const mapSel = el('import-map-subject'); mapSel.innerHTML='';
+  const optNew = document.createElement('option'); optNew.value='__use_row__'; optNew.textContent='Usa subject da file / crea se mancante'; mapSel.appendChild(optNew);
+  state.subjects.forEach(s=>{ const o=document.createElement('option'); o.value=s; o.textContent=s; mapSel.appendChild(o); });
+}
+
+function editImportRow(idx){
+  const row = importBuffer[idx];
+  const newQ = prompt('Modifica testo domanda', row.mapped.question);
+  if(newQ!==null) row.mapped.question = newQ;
+  const newSub = prompt('Materia', row.mapped.subject || '');
+  if(newSub!==null) row.mapped.subject = newSub;
+  renderImportPreview();
+}
+
+el('import-apply').onclick = ()=>{
+  if(importBuffer.length===0) return alert('Nessuna anteprima da importare');
+  const mapSel = el('import-map-subject').value;
   let added=0;
-  arr.forEach(item=>{
-    if(!item.subject || !item.type || !item.question) return;
-    const q = { id:uid(), subject:item.subject, type:item.type, question:item.question, explanation:item.explanation||'' };
-    if(item.type==='mcq'){ q.options = item.options || []; q.answer = typeof item.answer==='number'?item.answer:0; }
-    if(item.type==='open'){ q.solution = item.solution || ''; }
-    state.questions.push(q); if(!state.subjects.includes(item.subject)) state.subjects.push(item.subject);
+  importBuffer.forEach(row=>{
+    if(!row.selected || !row.ok) return;
+    const m = row.mapped;
+    const subject = (mapSel && mapSel!=='__use_row__') ? mapSel : (m.subject || 'Senza nome');
+    if(!state.subjects.includes(subject)) state.subjects.push(subject);
+    if(m.type==='mcq'){
+      const q = { id:uid(), subject, type:'mcq', question:m.question, options:m.options || [], answer: (typeof m.answer==='number'?m.answer:0), explanation:m.explanation||'' };
+      state.questions.push(q);
+    } else {
+      const q = { id:uid(), subject, type:'open', question:m.question, solution:m.solution||'', explanation:m.explanation||'' };
+      state.questions.push(q);
+    }
     added++;
   });
-  saveData(); renderSubjects(); renderQuestionsList();
-  alert('Importate '+added+' domande');
-}
+  saveData(); renderSubjects(); renderQuestionsList(); renderArchive();
+  alert('Importate ' + added + ' domande');
+  importBuffer = [];
+  renderImportPreview();
+};
 
-function downloadFile(name, content){
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([content], {type:'text/plain'}));
-  a.download = name;
-  document.body.appendChild(a); a.click(); a.remove();
-}
+el('import-clear').onclick = ()=>{ importBuffer=[]; renderImportPreview(); };
 
+// CSV helpers
 function questionsToCSV(arr){
-  // simple CSV: subject,type,question,options(sep|),answer,solution,explanation
   const lines = ['subject,type,question,options,answer,solution,explanation'];
   arr.forEach(q=>{
     const opts = q.options ? q.options.join('|').replace(/"/g,'""') : '';
@@ -739,45 +830,49 @@ function parseCSVRow(row){
   return res;
 }
 
-// Initial render
+function downloadFile(name, content){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], {type:'text/plain'}));
+  a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+}
+function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// initial render
+loadData();
+renderAll();
+
 function renderAll(){
   renderSubjects();
   renderArchive();
-  renderMainMessage('Seleziona una materia per iniziare.');
-  // populate options editor with two default options
+  renderMainMessage(state.activeSubject ? 'Materia selezionata: ' + state.activeSubject + '. Premi Inizia per cominciare il quiz.' : 'Seleziona una materia per iniziare.');
   if(el('options-list').children.length===0){
     el('options-list').appendChild(createOptionRow('Opzione 1',true));
     el('options-list').appendChild(createOptionRow('Opzione 2',false));
   }
-  // populate filter list select
   const fl = el('filter-list-subject'); if(fl){ fl.innerHTML=''; state.subjects.forEach(s=>{ const o=document.createElement('option'); o.value=s; o.textContent=s; fl.appendChild(o); }); }
+  el('btn-start').style.display = state.session.running ? 'none' : 'inline-block';
+  el('btn-end').style.display = state.session.running ? 'inline-block' : 'none';
+  el('btn-restart').style.display = state.activeSubject ? 'inline-block' : 'none';
 }
 
-// Keyboard: 1-4 handled in renderQuestion for MCQ; Enter handled too
-
-// On load
-loadData();
-renderAll();
-
-// Start with no active subject; user selects one. But if only one subject, auto-select.
-if(state.subjects.length===1){ selectSubject(state.subjects[0]); }
-
-// Hook filter chips
+// filter chips
 document.querySelectorAll('.chip').forEach(c=>{
   c.onclick = ()=>{
     document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
     c.classList.add('active');
     state.filter = c.dataset.filter;
     renderArchive();
-    // restart quiz if active subject
-    if(state.activeSubject) startQuiz();
   };
 });
 
-// Next button initial
+// buttons
+el('btn-start').onclick = ()=>startQuiz();
+el('btn-end').onclick = ()=>endQuiz(false);
+el('btn-restart').onclick = ()=>{ if(confirm('Ricominciare il quiz per questa materia?')) restartQuiz(); };
 el('next-btn').onclick = ()=>advance();
 
-// When switching to add tab, ensure subject select has value
+// tab behavior
 document.querySelectorAll('.tab').forEach(t=>{
   t.addEventListener('click', ()=> {
     if(t.dataset.tab==='add'){
@@ -786,11 +881,130 @@ document.querySelectorAll('.tab').forEach(t=>{
   });
 });
 
-// Expose some debug helpers in console
-window.Quiz4uni = { state, saveData, loadData, startQuiz, getPool };
+// GitHub sync (client-side)
+// WARNING: token must be generated by user. Do not commit token in repo.
+// The token is kept only in memory (or sessionStorage if user chooses).
+let ghToken = null;
 
-// Ensure UI updates when storage changes externally
+function setGhStatus(msg, ok=true){
+  const s = el('gh-status'); s.textContent = 'Stato: ' + msg; s.style.color = ok ? '' : 'var(--danger)';
+}
+
+// helper to base64 encode unicode
+function b64EncodeUnicode(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+function b64DecodeUnicode(str) {
+  return decodeURIComponent(escape(atob(str)));
+}
+
+async function ghGetFile({owner,repo,path,token}){
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+  const headers = token ? { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json' } : { Accept: 'application/vnd.github.v3+json' };
+  const res = await fetch(url, { headers });
+  if(!res.ok) throw new Error('Impossibile leggere file: ' + res.status + ' ' + res.statusText);
+  return await res.json();
+}
+
+async function ghPutFile({owner,repo,path,token,content,commitMessage='Aggiorna domande Quiz4uni'}){
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+  const headers = { Authorization: 'token ' + token, Accept: 'application/vnd.github.v3+json', 'Content-Type':'application/json' };
+  // check existing
+  let sha = null;
+  try{
+    const existing = await ghGetFile({owner,repo,path,token});
+    sha = existing.sha;
+  }catch(e){
+    // file may not exist; continue to create
+  }
+  const body = { message: commitMessage, content: b64EncodeUnicode(content) };
+  if(sha) body.sha = sha;
+  const res = await fetch(url, { method:'PUT', headers, body: JSON.stringify(body) });
+  if(!res.ok){
+    const txt = await res.text();
+    throw new Error('GitHub API error: ' + res.status + ' ' + txt);
+  }
+  return await res.json();
+}
+
+// Save to GitHub button
+el('gh-save').onclick = async ()=>{
+  const owner = el('gh-owner').value.trim();
+  const repo = el('gh-repo').value.trim();
+  const path = el('gh-path').value.trim() || 'questions.json';
+  const token = el('gh-token').value.trim();
+  if(!owner || !repo || !token) return alert('Inserisci owner, repo e token');
+  // keep token in memory only
+  ghToken = token;
+  setGhStatus('Salvataggio in corso...');
+  try{
+    const content = JSON.stringify({ subjects: state.subjects, questions: state.questions }, null, 2);
+    await ghPutFile({ owner, repo, path, token, content, commitMessage: 'Aggiorna domande Quiz4uni' });
+    setGhStatus('Salvato su GitHub con successo');
+    alert('Salvataggio completato');
+  }catch(err){
+    console.error(err);
+    setGhStatus('Errore salvataggio', false);
+    alert('Errore durante il salvataggio: ' + err.message);
+  }
+};
+
+// Load from GitHub button
+el('gh-load').onclick = async ()=>{
+  const owner = el('gh-owner').value.trim();
+  const repo = el('gh-repo').value.trim();
+  const path = el('gh-path').value.trim() || 'questions.json';
+  const token = el('gh-token').value.trim();
+  if(!owner || !repo) return alert('Inserisci owner e repo');
+  setGhStatus('Caricamento in corso...');
+  try{
+    const data = await ghGetFile({ owner, repo, path, token: token || null });
+    const content = b64DecodeUnicode(data.content.replace(/\n/g,''));
+    const parsed = JSON.parse(content);
+    // merge or replace? Ask user via confirm
+    if(!confirm('Sovrascrivere le domande locali con quelle caricate da GitHub? Premi Annulla per unirle (merge).')) {
+      // merge: add subjects/questions not present (by id)
+      const existingIds = new Set(state.questions.map(q=>q.id));
+      let added=0;
+      (parsed.questions || []).forEach(q=>{
+        if(!existingIds.has(q.id)){
+          state.questions.push(q);
+          added++;
+        }
+      });
+      (parsed.subjects || []).forEach(s=>{ if(!state.subjects.includes(s)) state.subjects.push(s); });
+      saveData();
+      renderAll();
+      setGhStatus('Caricamento completato (merge)');
+      alert('Importate ' + added + ' nuove domande (merge)');
+    } else {
+      // replace
+      state.subjects = parsed.subjects || [];
+      state.questions = parsed.questions || [];
+      saveData();
+      renderAll();
+      setGhStatus('Caricamento completato (sovrascrittura)');
+      alert('Dati locali sovrascritti con successo');
+    }
+  }catch(err){
+    console.error(err);
+    setGhStatus('Errore caricamento', false);
+    alert('Errore durante il caricamento: ' + err.message);
+  }
+};
+
+// clear token from input and memory
+el('gh-clear-token').onclick = ()=>{
+  el('gh-token').value = '';
+  ghToken = null;
+  setGhStatus('Token cancellato dalla sessione');
+};
+
+// storage sync across tabs
 window.addEventListener('storage', ()=>{ loadData(); renderAll(); });
+
+// expose debug
+window.Quiz4uni = { state, saveData, loadData, startQuiz, getPool };
 
 </script>
 </body>
