@@ -172,6 +172,11 @@
       background:rgba(255,255,255,0.02);
     }
 
+    .option.selected{
+      border-color:rgba(125,211,252,0.7);
+      background:rgba(6,182,212,0.12);
+    }
+
     .option.correct{
       background:linear-gradient(90deg, rgba(22,163,74,0.12), rgba(22,163,74,0.06));
       border-color:rgba(22,163,74,0.6);
@@ -345,6 +350,11 @@
       line-height:1.5;
     }
 
+    .nav-info{
+      font-size:13px;
+      color:var(--muted);
+    }
+
     @media (max-width:600px){
       .wrap{
         margin:12px;
@@ -386,23 +396,19 @@
           <div class="center">
             <button id="startBtn" class="primary">Avvia quiz</button>
           </div>
-          <div class="center">
-            <button id="resumeBtn" class="ghost hidden">Riprendi quiz salvato</button>
-          </div>
         </div>
 
         <div id="quizScreen" class="hidden">
           <div class="meta">
             <div><strong id="qIndex">1 / 10</strong></div>
-            <div class="progress" title="Avanzamento">
-              <i id="progressBar"></i>
-            </div>
+            <div class="progress"><i id="progressBar"></i></div>
           </div>
 
           <div class="question-area">
             <div class="question-text" id="questionText">Testo domanda</div>
+            <div class="nav-info" id="navInfo"></div>
 
-            <div id="mcArea" class="options hidden" role="list"></div>
+            <div id="mcArea" class="options hidden"></div>
 
             <div id="openArea" class="hidden">
               <textarea id="openAnswer" placeholder="Scrivi qui la tua risposta..."></textarea>
@@ -420,9 +426,11 @@
           </div>
 
           <div class="controls-bottom">
-            <div></div>
             <div style="display:flex; gap:10px; flex-wrap:wrap;">
-              <button id="nextBtn" class="primary" disabled>Prossima</button>
+              <button id="prevBtn" class="ghost">Indietro</button>
+              <button id="nextBtn" class="primary">Avanti</button>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
               <button id="endBtn" class="ghost">Termina quiz</button>
             </div>
           </div>
@@ -487,10 +495,10 @@
     const btnOpen = document.getElementById('btnOpen');
     const btnSim = document.getElementById('btnSim');
     const startBtn = document.getElementById('startBtn');
-    const resumeBtn = document.getElementById('resumeBtn');
     const qIndexEl = document.getElementById('qIndex');
     const progressBar = document.getElementById('progressBar');
     const questionText = document.getElementById('questionText');
+    const navInfo = document.getElementById('navInfo');
     const mcArea = document.getElementById('mcArea');
     const openArea = document.getElementById('openArea');
     const openAnswer = document.getElementById('openAnswer');
@@ -500,6 +508,7 @@
     const selfGoodBtn = document.getElementById('selfGoodBtn');
     const selfBadBtn = document.getElementById('selfBadBtn');
     const explanationEl = document.getElementById('explanation');
+    const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const endBtn = document.getElementById('endBtn');
     const percentText = document.getElementById('percentText');
@@ -516,9 +525,9 @@
     const timerBadge = document.getElementById('timerBadge');
     const timerText = document.getElementById('timerText');
 
-    btnMC.addEventListener('click', ()=>{ selectCategory('mc'); });
-    btnOpen.addEventListener('click', ()=>{ selectCategory('open'); });
-    btnSim.addEventListener('click', ()=>{ selectCategory('sim'); });
+    btnMC.addEventListener('click', ()=> selectCategory('mc'));
+    btnOpen.addEventListener('click', ()=> selectCategory('open'));
+    btnSim.addEventListener('click', ()=> selectCategory('sim'));
 
     function selectCategory(type){
       state.mode = type;
@@ -529,41 +538,18 @@
 
     startBtn.addEventListener('click', async ()=>{
       await loadQuestions();
-      clearSavedState();
       startQuiz();
     });
 
     async function loadQuestions(){
-      try{
-        const [res1, res2] = await Promise.all([
-          fetch('questions.json').catch(()=>null),
-          fetch('questions_open.json').catch(()=>null)
-        ]);
+      const [res1, res2] = await Promise.all([
+        fetch('questions.json').catch(()=>null),
+        fetch('questions_open.json').catch(()=>null)
+      ]);
 
-        const data1 = res1 && res1.ok ? await res1.json() : [];
-        const data2 = res2 && res2.ok ? await res2.json() : [];
-
-        state.allQuestions = [...data1, ...data2];
-      }catch(err){
-        console.warn('Errore caricamento file domande', err);
-        state.allQuestions = [
-          {
-            id:1,
-            type:'mc',
-            question:'Qual è il colore del cielo?',
-            options:['Verde','Blu','Rosso'],
-            answer:1,
-            explanation:'Il cielo appare blu per la diffusione della luce.'
-          },
-          {
-            id:2,
-            type:'open',
-            question:'Spiega brevemente la fotosintesi.',
-            solution:'La fotosintesi è il processo con cui le piante trasformano luce, acqua e anidride carbonica in nutrienti.'
-          }
-        ];
-      }
-      checkResumeAvailability();
+      const data1 = res1 && res1.ok ? await res1.json() : [];
+      const data2 = res2 && res2.ok ? await res2.json() : [];
+      state.allQuestions = [...data1, ...data2];
     }
 
     function startQuiz(fromIds=null){
@@ -578,30 +564,28 @@
         const mcSelected = sampleQuestions(mcPool, 4);
         const openSelected = sampleQuestions(openPool, 6);
         state.quizQuestions = [...mcSelected, ...openSelected];
-        shuffle(state.quizQuestions);
         state.timerSeconds = 45 * 60;
         startTimer();
       } else {
         state.isSimulation = false;
-        const pool = state.allQuestions.filter(q => q.type === state.mode);
-
-        if(fromIds && fromIds.length){
-          state.quizQuestions = pool.filter(q => fromIds.includes(q.id));
-        } else {
-          state.quizQuestions = [...pool];
-        }
-
-        shuffle(state.quizQuestions);
         hideTimer();
+        const pool = state.allQuestions.filter(q => q.type === state.mode);
+        state.quizQuestions = fromIds?.length ? pool.filter(q => fromIds.includes(q.id)) : [...pool];
+        shuffle(state.quizQuestions);
       }
 
       state.currentIndex = 0;
-      state.answers = [];
+      state.answers = Array(state.quizQuestions.length).fill(null).map(() => ({
+        id: null,
+        correct: null,
+        userAnswer: null,
+        skipped: false,
+        viewedSolution: false
+      }));
       state.incorrectIds = [];
       state.skippedIds = [];
       showScreen('quiz');
       renderQuestion();
-      saveStateToStorage();
     }
 
     function sampleQuestions(arr, count){
@@ -617,97 +601,135 @@
     }
 
     function renderQuestion(){
-      clearInteraction();
-
+      closeOverlay();
       const q = state.quizQuestions[state.currentIndex];
-      if(!q){
-        showResults();
-        return;
+      if(!q) return;
+
+      const answerState = state.answers[state.currentIndex] || {};
+      qIndexEl.textContent = `${state.currentIndex + 1} / ${state.quizQuestions.length}`;
+      progressBar.style.width = `${((state.currentIndex + 1) / state.quizQuestions.length) * 100}%`;
+
+      questionText.textContent = q.question;
+
+      if(state.isSimulation){
+        navInfo.textContent = state.currentIndex < 4
+          ? 'Sezione 1: Scelta multipla'
+          : 'Sezione 2: Domande aperte';
+      } else {
+        navInfo.textContent = q.type === 'mc' ? 'Domanda a scelta multipla' : 'Domanda aperta';
       }
 
-      qIndexEl.textContent = `${state.currentIndex + 1} / ${state.quizQuestions.length}`;
-      const pct = Math.round((state.currentIndex / state.quizQuestions.length) * 100);
-      progressBar.style.width = pct + '%';
-      questionText.textContent = q.question;
       explanationEl.classList.add('hidden');
       explanationEl.textContent = '';
+      openSolution.classList.add('hidden');
+      openSolution.textContent = '';
+
+      prevBtn.disabled = state.currentIndex === 0;
+      nextBtn.textContent = state.currentIndex === state.quizQuestions.length - 1 ? 'Concludi' : 'Avanti';
 
       if(q.type === 'mc'){
         mcArea.classList.remove('hidden');
         openArea.classList.add('hidden');
-        renderOptions(q);
+        renderOptions(q, answerState);
       } else {
         mcArea.classList.add('hidden');
         openArea.classList.remove('hidden');
 
-        openAnswer.value = '';
-        openSolution.classList.add('hidden');
-        openSolution.textContent = '';
-        selfGoodBtn.classList.remove('primary');
-        selfBadBtn.classList.remove('primary');
-        nextBtn.disabled = true;
+        openAnswer.value = answerState.userAnswer && typeof answerState.userAnswer === 'string'
+          ? answerState.userAnswer
+          : '';
+
+        selfGoodBtn.classList.toggle('primary', answerState.correct === true && !answerState.skipped);
+        selfBadBtn.classList.toggle('primary', answerState.correct === false && !answerState.skipped);
+
+        if(answerState.skipped){
+          explanationEl.textContent = 'Questa domanda è stata saltata.';
+          explanationEl.classList.remove('hidden');
+        } else if(answerState.correct === true){
+          explanationEl.textContent = 'Risposta registrata come corretta.';
+          explanationEl.classList.remove('hidden');
+        } else if(answerState.correct === false){
+          explanationEl.textContent = 'Risposta registrata come sbagliata.';
+          explanationEl.classList.remove('hidden');
+        }
       }
     }
 
-    function renderOptions(q){
+    function renderOptions(q, saved){
       mcArea.innerHTML = '';
       q.options.forEach((opt, idx) => {
         const btn = document.createElement('div');
         btn.className = 'option';
         btn.setAttribute('data-idx', idx);
-        btn.tabIndex = 0;
         btn.innerHTML = `<strong>${idx + 1}.</strong> ${opt}`;
-        btn.addEventListener('click', ()=> handleMCSelect(q, idx));
+
+        if(saved && saved.userAnswer === idx){
+          btn.classList.add('selected');
+        }
+
+        btn.addEventListener('click', ()=>{
+          saveMCAnswer(q, idx);
+          renderQuestion();
+        });
+
         mcArea.appendChild(btn);
       });
-      nextBtn.disabled = true;
+
+      if(saved && saved.userAnswer !== null && saved.userAnswer !== undefined){
+        const correctIdx = q.answer;
+        const selectedIdx = saved.userAnswer;
+        Array.from(mcArea.children).forEach((el)=>{
+          const i = Number(el.getAttribute('data-idx'));
+          if(i === correctIdx) el.classList.add('correct');
+          if(i === selectedIdx && i !== correctIdx) el.classList.add('wrong');
+        });
+
+        if(q.explanation){
+          explanationEl.textContent = q.explanation;
+          explanationEl.classList.remove('hidden');
+        }
+      }
     }
 
-    function handleMCSelect(q, idx){
-      if(state.answers[state.currentIndex]) return;
-
-      const correctIdx = q.answer;
-      const optionEls = Array.from(mcArea.children);
-
-      optionEls.forEach((el)=>{
-        const i = Number(el.getAttribute('data-idx'));
-        if(i === correctIdx) el.classList.add('correct');
-        if(i === idx && i !== correctIdx) el.classList.add('wrong');
-        el.style.pointerEvents = 'none';
-      });
-
-      const isCorrect = idx === correctIdx;
+    function saveMCAnswer(q, idx){
+      const isCorrect = idx === q.answer;
       state.answers[state.currentIndex] = {
-        id:q.id,
-        correct:isCorrect,
-        userAnswer:idx,
-        skipped:false
+        id: q.id,
+        correct: isCorrect,
+        userAnswer: idx,
+        skipped: false,
+        viewedSolution: false
       };
-
-      if(!isCorrect && !state.incorrectIds.includes(q.id)){
-        state.incorrectIds.push(q.id);
-      }
-
-      if(q.explanation){
-        explanationEl.textContent = q.explanation;
-        explanationEl.classList.remove('hidden');
-      }
-
-      nextBtn.disabled = false;
-      afterAnswerSaved();
-      nextBtn.focus();
+      recomputeTracking();
     }
+
+    openAnswer.addEventListener('input', ()=>{
+      const prev = state.answers[state.currentIndex] || {};
+      const q = state.quizQuestions[state.currentIndex];
+      state.answers[state.currentIndex] = {
+        id: q.id,
+        correct: prev.correct ?? null,
+        userAnswer: openAnswer.value,
+        skipped: prev.skipped ?? false,
+        viewedSolution: prev.viewedSolution ?? false
+      };
+    });
 
     showSolutionBtn.addEventListener('click', ()=>{
       const q = state.quizQuestions[state.currentIndex];
-      if(!q) return;
+      const prev = state.answers[state.currentIndex] || {};
+
+      state.answers[state.currentIndex] = {
+        id: q.id,
+        correct: prev.correct ?? null,
+        userAnswer: openAnswer.value,
+        skipped: prev.skipped ?? false,
+        viewedSolution: true
+      };
 
       if(q.solution){
         openSolution.textContent = q.solution;
         openSolution.classList.remove('hidden');
-      } else {
-        openSolution.classList.add('hidden');
-        openSolution.textContent = '';
       }
 
       if(q.images && q.images.length){
@@ -719,28 +741,125 @@
 
     skipBtn.addEventListener('click', ()=>{
       const q = state.quizQuestions[state.currentIndex];
-      if(!q) return;
-
       state.answers[state.currentIndex] = {
-        id:q.id,
-        correct:null,
-        userAnswer:'',
-        skipped:true
+        id: q.id,
+        correct: null,
+        userAnswer: openAnswer.value || '',
+        skipped: true,
+        viewedSolution: false
       };
+      recomputeTracking();
+      renderQuestion();
+    });
 
-      if(!state.skippedIds.includes(q.id)){
-        state.skippedIds.push(q.id);
-      }
+    selfGoodBtn.addEventListener('click', ()=> recordOpenAnswer(true));
+    selfBadBtn.addEventListener('click', ()=> recordOpenAnswer(false));
 
-      state.currentIndex++;
-      saveStateToStorage();
+    function recordOpenAnswer(isCorrect){
+      const q = state.quizQuestions[state.currentIndex];
+      state.answers[state.currentIndex] = {
+        id: q.id,
+        correct: isCorrect,
+        userAnswer: openAnswer.value || '',
+        skipped: false,
+        viewedSolution: true
+      };
+      recomputeTracking();
+      renderQuestion();
+    }
 
-      if(state.currentIndex >= state.quizQuestions.length){
-        showResults();
-      } else {
+    prevBtn.addEventListener('click', ()=>{
+      if(state.currentIndex > 0){
+        state.currentIndex--;
         renderQuestion();
       }
     });
+
+    nextBtn.addEventListener('click', ()=>{
+      if(state.currentIndex < state.quizQuestions.length - 1){
+        state.currentIndex++;
+        renderQuestion();
+      } else {
+        showResults();
+      }
+    });
+
+    endBtn.addEventListener('click', ()=>{
+      showResults(true);
+    });
+
+    function recomputeTracking(){
+      state.incorrectIds = [];
+      state.skippedIds = [];
+
+      state.answers.forEach(a => {
+        if(!a || !a.id) return;
+        if(a.skipped){
+          if(!state.skippedIds.includes(a.id)) state.skippedIds.push(a.id);
+          return;
+        }
+        if(a.correct === false){
+          if(!state.incorrectIds.includes(a.id)) state.incorrectIds.push(a.id);
+        }
+      });
+    }
+
+    function showResults(isPartial = false){
+      stopTimer();
+      recomputeTracking();
+      showScreen('results');
+
+      const answered = state.answers.filter(a => a && a.id);
+      const attempted = answered.filter(a => !a.skipped && a.correct !== null);
+      const correct = attempted.filter(a => a.correct === true).length;
+      const wrong = attempted.filter(a => a.correct === false).length;
+      const skipped = answered.filter(a => a.skipped).length;
+      const percent = attempted.length ? Math.round((correct / attempted.length) * 100) : 0;
+
+      percentText.textContent = percent + '%';
+
+      if(state.isSimulation && state.simulationEndedByTime){
+        scoreSummary.textContent = `Tempo scaduto • Valutate: ${attempted.length} • Corrette: ${correct} • Sbagliate: ${wrong} • Saltate: ${skipped}`;
+      } else if(isPartial){
+        scoreSummary.textContent = `Risultato parziale • Valutate: ${attempted.length} • Corrette: ${correct} • Sbagliate: ${wrong} • Saltate: ${skipped}`;
+      } else {
+        scoreSummary.textContent = `Valutate: ${attempted.length} • Corrette: ${correct} • Sbagliate: ${wrong} • Saltate: ${skipped}`;
+      }
+
+      repeatErrorsBtn.disabled = state.incorrectIds.length === 0 || state.isSimulation;
+    }
+
+    repeatErrorsBtn.addEventListener('click', ()=>{
+      if(state.incorrectIds.length === 0 || state.isSimulation) return;
+
+      const mcErrors = state.allQuestions.filter(q => q.type === 'mc' && state.incorrectIds.includes(q.id));
+      const openErrors = state.allQuestions.filter(q => q.type === 'open' && state.incorrectIds.includes(q.id));
+
+      if(mcErrors.length > 0){
+        selectCategory('mc');
+      } else if(openErrors.length > 0){
+        selectCategory('open');
+      }
+
+      startQuiz(state.incorrectIds);
+    });
+
+    restartBtn.addEventListener('click', ()=>{
+      startQuiz();
+    });
+
+    homeBtn.addEventListener('click', ()=>{
+      stopTimer();
+      hideTimer();
+      showScreen('start');
+    });
+
+    function shuffle(arr){
+      for(let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
 
     function openImageFullscreen(src){
       overlayImage.classList.add('hidden');
@@ -770,11 +889,8 @@
     }
 
     closeOverlayBtn.addEventListener('click', closeOverlay);
-
     imageOverlay.addEventListener('click', (e)=>{
-      if(e.target === imageOverlay){
-        closeOverlay();
-      }
+      if(e.target === imageOverlay) closeOverlay();
     });
 
     function closeOverlay(){
@@ -784,120 +900,15 @@
       overlayMessage.classList.add('hidden');
     }
 
-    selfGoodBtn.addEventListener('click', ()=>{
-      recordOpenAnswer(true);
-    });
-
-    selfBadBtn.addEventListener('click', ()=>{
-      recordOpenAnswer(false);
-    });
-
-    function recordOpenAnswer(isCorrect){
-      const q = state.quizQuestions[state.currentIndex];
-      if(!q) return;
-
-      state.answers[state.currentIndex] = {
-        id:q.id,
-        correct:isCorrect,
-        userAnswer:openAnswer.value || '',
-        skipped:false
-      };
-
-      if(!isCorrect && !state.incorrectIds.includes(q.id)){
-        state.incorrectIds.push(q.id);
-      }
-
-      selfGoodBtn.classList.toggle('primary', isCorrect);
-      selfBadBtn.classList.toggle('primary', !isCorrect);
-
-      explanationEl.textContent = isCorrect
-        ? 'Risposta registrata come corretta.'
-        : 'Risposta registrata come sbagliata.';
-      explanationEl.classList.remove('hidden');
-
-      nextBtn.disabled = false;
-      afterAnswerSaved();
-    }
-
-    nextBtn.addEventListener('click', ()=>{
-      state.currentIndex++;
-      saveStateToStorage();
-
-      if(state.currentIndex >= state.quizQuestions.length){
-        showResults();
-      } else {
-        renderQuestion();
-      }
-    });
-
-    function showResults(isPartial = false){
-      stopTimer();
-      showScreen('results');
-
-      const attempted = state.answers.filter(a => a && !a.skipped);
-      const totalAttempted = attempted.length;
-      const correct = attempted.filter(a => a.correct === true).length;
-      const wrong = attempted.filter(a => a.correct === false).length;
-      const skipped = state.answers.filter(a => a && a.skipped).length;
-      const percent = totalAttempted ? Math.round((correct / totalAttempted) * 100) : 0;
-
-      percentText.textContent = percent + '%';
-
-      if(state.isSimulation && state.simulationEndedByTime){
-        scoreSummary.textContent = `Simulazione terminata: tempo scaduto • Risposte valutate: ${totalAttempted} • Corrette: ${correct} • Sbagliate: ${wrong} • Saltate: ${skipped}`;
-      } else if(isPartial){
-        scoreSummary.textContent = `Tentativi: ${totalAttempted} • Corrette: ${correct} • Sbagliate: ${wrong} • Saltate: ${skipped} (risultati parziali)`;
-      } else {
-        scoreSummary.textContent = `Valutate: ${totalAttempted} • Corrette: ${correct} • Sbagliate: ${wrong} • Saltate: ${skipped}`;
-      }
-
-      repeatErrorsBtn.disabled = state.incorrectIds.length === 0 || state.mode === 'sim';
-    }
-
-    repeatErrorsBtn.addEventListener('click', ()=>{
-      if(state.incorrectIds.length === 0) return;
-      clearSavedState();
-      selectCategory('mc');
-      if(state.allQuestions.filter(q => q.type === 'mc' && state.incorrectIds.includes(q.id)).length === 0){
-        selectCategory('open');
-      }
-      startQuiz(state.incorrectIds);
-    });
-
-    restartBtn.addEventListener('click', ()=>{
-      clearSavedState();
-      startQuiz();
-    });
-
-    homeBtn.addEventListener('click', ()=>{
-      stopTimer();
-      hideTimer();
-      showScreen('start');
-    });
-
-    function shuffle(arr){
-      for(let i = arr.length - 1; i > 0; i--){
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-    }
-
-    function clearInteraction(){
-      mcArea.innerHTML = '';
-      openArea.classList.add('hidden');
-      explanationEl.classList.add('hidden');
-      explanationEl.textContent = '';
-      nextBtn.disabled = true;
-      closeOverlay();
-    }
-
     function startTimer(){
       showTimer();
       updateTimerUI();
       stopTimer();
+
       state.timerInterval = setInterval(() => {
         state.timerSeconds--;
         updateTimerUI();
+
         if(state.timerSeconds <= 0){
           state.timerSeconds = 0;
           updateTimerUI();
@@ -926,92 +937,6 @@
       const min = String(Math.floor(state.timerSeconds / 60)).padStart(2, '0');
       const sec = String(state.timerSeconds % 60).padStart(2, '0');
       timerText.textContent = `${min}:${sec}`;
-    }
-
-    const STORAGE_KEY = 'quiz_state_v1';
-
-    function saveStateToStorage(){
-      try{
-        const toSave = {
-          quizQuestions: state.quizQuestions.map(q => q.id),
-          currentIndex: state.currentIndex,
-          answers: state.answers,
-          mode: state.mode,
-          incorrectIds: state.incorrectIds,
-          skippedIds: state.skippedIds,
-          isSimulation: state.isSimulation,
-          simulationEndedByTime: state.simulationEndedByTime,
-          timerSeconds: state.timerSeconds
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
-        checkResumeAvailability();
-      }catch(e){
-        console.warn('Impossibile salvare lo stato', e);
-      }
-    }
-
-    function clearSavedState(){
-      localStorage.removeItem(STORAGE_KEY);
-      resumeBtn.classList.add('hidden');
-    }
-
-    function loadStateFromStorage(){
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw) return null;
-      try{
-        return JSON.parse(raw);
-      }catch(e){
-        return null;
-      }
-    }
-
-    function checkResumeAvailability(){
-      const s = loadStateFromStorage();
-      if(s && s.quizQuestions && s.quizQuestions.length > 0){
-        resumeBtn.classList.remove('hidden');
-      } else {
-        resumeBtn.classList.add('hidden');
-      }
-    }
-
-    endBtn.addEventListener('click', ()=>{
-      saveStateToStorage();
-      showResults(true);
-    });
-
-    resumeBtn.addEventListener('click', async ()=>{
-      const s = loadStateFromStorage();
-      if(!s) return;
-
-      if(!state.allQuestions || state.allQuestions.length === 0){
-        await loadQuestions();
-      }
-
-      state.quizQuestions = s.quizQuestions
-        .map(id => state.allQuestions.find(q => q.id === id))
-        .filter(Boolean);
-
-      state.currentIndex = s.currentIndex || 0;
-      state.answers = s.answers || [];
-      state.mode = s.mode || state.mode;
-      state.incorrectIds = s.incorrectIds || [];
-      state.skippedIds = s.skippedIds || [];
-      state.isSimulation = s.isSimulation || false;
-      state.simulationEndedByTime = s.simulationEndedByTime || false;
-      state.timerSeconds = s.timerSeconds ?? (45 * 60);
-
-      showScreen('quiz');
-      renderQuestion();
-
-      if(state.isSimulation && state.timerSeconds > 0){
-        startTimer();
-      } else {
-        hideTimer();
-      }
-    });
-
-    function afterAnswerSaved(){
-      saveStateToStorage();
     }
 
     selectCategory('mc');
