@@ -14,6 +14,7 @@
       --warning:#f59e0b;
       --muted:#94a3b8;
       --text:#e6eef8;
+      --soft:#1e293b;
       font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
@@ -25,7 +26,7 @@
     }
 
     .wrap{
-      max-width:950px;
+      max-width:980px;
       margin:36px auto;
       padding:28px;
       background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
@@ -42,15 +43,19 @@
       flex-wrap:wrap;
     }
 
+    h1,h2,h3{
+      margin:0;
+    }
+
     h1{
       font-size:20px;
-      margin:0;
     }
 
     .controls{
       display:flex;
       gap:10px;
       align-items:center;
+      flex-wrap:wrap;
     }
 
     .timer-badge{
@@ -80,7 +85,7 @@
     }
 
     button:hover{
-      opacity:0.95;
+      opacity:0.96;
     }
 
     button.primary{
@@ -99,6 +104,11 @@
       background:rgba(245,158,11,0.14);
       border:1px solid rgba(245,158,11,0.4);
       color:#ffd89a;
+    }
+
+    button:disabled{
+      opacity:0.45;
+      cursor:not-allowed;
     }
 
     .center{
@@ -215,11 +225,6 @@
       color:#ffe6b0;
     }
 
-    .palette-btn.current.answered,
-    .palette-btn.current.skipped{
-      color:#042027;
-    }
-
     .legend{
       display:flex;
       gap:14px;
@@ -248,7 +253,7 @@
     .dot.empty{ background:#64748b; }
 
     .question-area{
-      min-height:160px;
+      min-height:180px;
       display:flex;
       flex-direction:column;
       gap:12px;
@@ -284,7 +289,7 @@
     }
 
     .option.wrong{
-      background:linear-gradient(90deg, rgba(220,38,38,0.08), rgba(220,38,38,0.04));
+      background:linear-gradient(90deg, rgba(220,38,38,0.12), rgba(220,38,38,0.06));
       border-color:rgba(220,38,38,0.6);
     }
 
@@ -346,6 +351,95 @@
     .muted{
       color:var(--muted);
       font-size:13px;
+    }
+
+    .nav-info{
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .review-list{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      margin-top:18px;
+    }
+
+    .review-item{
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:12px;
+      padding:16px;
+      background:rgba(255,255,255,0.03);
+    }
+
+    .review-item.correct{
+      border-color:rgba(22,163,74,0.45);
+      background:rgba(22,163,74,0.08);
+    }
+
+    .review-item.wrong{
+      border-color:rgba(220,38,38,0.45);
+      background:rgba(220,38,38,0.08);
+    }
+
+    .review-item.skipped{
+      border-color:rgba(245,158,11,0.45);
+      background:rgba(245,158,11,0.08);
+    }
+
+    .review-head{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+
+    .review-status{
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .status-correct{
+      background:rgba(22,163,74,0.18);
+      color:#d8ffe4;
+    }
+
+    .status-wrong{
+      background:rgba(220,38,38,0.18);
+      color:#ffd6d6;
+    }
+
+    .status-skipped{
+      background:rgba(245,158,11,0.18);
+      color:#ffe7b3;
+    }
+
+    .review-block{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:10px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    .review-label{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:6px;
+      text-transform:uppercase;
+      letter-spacing:0.04em;
+    }
+
+    .review-image{
+      margin-top:10px;
+      max-width:100%;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:#111827;
     }
 
     #login-box{
@@ -444,11 +538,6 @@
       line-height:1.5;
     }
 
-    .nav-info{
-      font-size:13px;
-      color:var(--muted);
-    }
-
     @media (max-width:600px){
       .wrap{
         margin:12px;
@@ -527,13 +616,15 @@
 
             <div id="openArea" class="hidden">
               <textarea id="openAnswer" placeholder="Scrivi qui la tua risposta..."></textarea>
-              <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+
+              <div id="openControls" style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
                 <button id="showSolutionBtn">Mostra soluzione</button>
                 <button id="skipBtn" class="warn">Salta</button>
                 <div style="flex:1"></div>
                 <button id="selfGoodBtn" class="ghost">Ho fatto bene</button>
                 <button id="selfBadBtn" class="ghost">Ho sbagliato</button>
               </div>
+
               <div id="openSolution" class="explanation hidden"></div>
             </div>
 
@@ -556,11 +647,27 @@
             <div class="big-percent" id="percentText">0%</div>
             <div class="muted" id="scoreSummary">Totale: 0 • Corrette: 0 • Sbagliate: 0</div>
             <div class="btn-row">
+              <button id="reviewBtn" class="ghost hidden">Vedi revisione</button>
               <button id="repeatErrorsBtn" class="ghost">Ripeti errori</button>
               <button id="restartBtn" class="primary">Ricomincia</button>
               <button id="homeBtn" class="ghost">Torna alla home</button>
             </div>
           </div>
+        </div>
+
+        <div id="reviewScreen" class="hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+            <div>
+              <h2>Revisione simulazione</h2>
+              <p class="muted" style="margin-top:6px;">Qui trovi tutte le risposte corrette, le tue risposte e le eventuali immagini di soluzione.</p>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button id="reviewRepeatErrorsBtn" class="ghost">Ripeti errori</button>
+              <button id="reviewBackResultsBtn" class="primary">Torna ai risultati</button>
+            </div>
+          </div>
+
+          <div id="reviewList" class="review-list"></div>
         </div>
       </main>
     </div>
@@ -598,37 +705,50 @@
       isSimulation: false,
       simulationEndedByTime: false,
       timerSeconds: 45 * 60,
-      timerInterval: null
+      timerInterval: null,
+      reviewAvailable: false
     };
 
     const startScreen = document.getElementById('startScreen');
     const quizScreen = document.getElementById('quizScreen');
     const resultsScreen = document.getElementById('resultsScreen');
+    const reviewScreen = document.getElementById('reviewScreen');
+
     const btnMC = document.getElementById('btnMC');
     const btnOpen = document.getElementById('btnOpen');
     const btnSim = document.getElementById('btnSim');
     const startBtn = document.getElementById('startBtn');
+
     const qIndexEl = document.getElementById('qIndex');
     const progressBar = document.getElementById('progressBar');
     const questionText = document.getElementById('questionText');
     const navInfo = document.getElementById('navInfo');
+
     const mcArea = document.getElementById('mcArea');
     const openArea = document.getElementById('openArea');
     const openAnswer = document.getElementById('openAnswer');
     const openSolution = document.getElementById('openSolution');
+    const openControls = document.getElementById('openControls');
     const showSolutionBtn = document.getElementById('showSolutionBtn');
     const skipBtn = document.getElementById('skipBtn');
     const selfGoodBtn = document.getElementById('selfGoodBtn');
     const selfBadBtn = document.getElementById('selfBadBtn');
     const explanationEl = document.getElementById('explanation');
+
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const endBtn = document.getElementById('endBtn');
+
     const percentText = document.getElementById('percentText');
     const scoreSummary = document.getElementById('scoreSummary');
+    const reviewBtn = document.getElementById('reviewBtn');
     const repeatErrorsBtn = document.getElementById('repeatErrorsBtn');
     const restartBtn = document.getElementById('restartBtn');
     const homeBtn = document.getElementById('homeBtn');
+
+    const reviewRepeatErrorsBtn = document.getElementById('reviewRepeatErrorsBtn');
+    const reviewBackResultsBtn = document.getElementById('reviewBackResultsBtn');
+    const reviewList = document.getElementById('reviewList');
 
     const paletteWrap = document.getElementById('paletteWrap');
     const questionPalette = document.getElementById('questionPalette');
@@ -671,9 +791,10 @@
       state.allQuestions = [...data1, ...data2];
     }
 
-    function startQuiz(fromIds=null){
+    function startQuiz(fromIds = null){
       stopTimer();
       state.simulationEndedByTime = false;
+      state.reviewAvailable = false;
 
       const mcPool = state.allQuestions.filter(q => q.type === 'mc');
       const openPool = state.allQuestions.filter(q => q.type === 'open');
@@ -690,9 +811,14 @@
         state.isSimulation = false;
         hideTimer();
         paletteWrap.classList.add('hidden');
-        const pool = state.allQuestions.filter(q => q.type === state.mode);
-        state.quizQuestions = fromIds?.length ? pool.filter(q => fromIds.includes(q.id)) : [...pool];
-        shuffle(state.quizQuestions);
+
+        if(fromIds && fromIds.length){
+          state.quizQuestions = state.allQuestions.filter(q => fromIds.includes(q.id));
+        } else {
+          const pool = state.allQuestions.filter(q => q.type === state.mode);
+          state.quizQuestions = [...pool];
+          shuffle(state.quizQuestions);
+        }
       }
 
       state.currentIndex = 0;
@@ -719,6 +845,7 @@
       startScreen.classList.toggle('hidden', name !== 'start');
       quizScreen.classList.toggle('hidden', name !== 'quiz');
       resultsScreen.classList.toggle('hidden', name !== 'results');
+      reviewScreen.classList.toggle('hidden', name !== 'review');
     }
 
     function renderQuestion(){
@@ -758,22 +885,26 @@
         mcArea.classList.add('hidden');
         openArea.classList.remove('hidden');
 
-        openAnswer.value = answerState.userAnswer && typeof answerState.userAnswer === 'string'
-          ? answerState.userAnswer
-          : '';
+        openAnswer.value = typeof answerState.userAnswer === 'string' ? answerState.userAnswer : '';
 
-        selfGoodBtn.classList.toggle('primary', answerState.correct === true && !answerState.skipped);
-        selfBadBtn.classList.toggle('primary', answerState.correct === false && !answerState.skipped);
+        if(state.isSimulation){
+          openControls.classList.add('hidden');
+          explanationEl.classList.add('hidden');
+        } else {
+          openControls.classList.remove('hidden');
+          selfGoodBtn.classList.toggle('primary', answerState.correct === true && !answerState.skipped);
+          selfBadBtn.classList.toggle('primary', answerState.correct === false && !answerState.skipped);
 
-        if(answerState.skipped){
-          explanationEl.textContent = 'Questa domanda è stata saltata.';
-          explanationEl.classList.remove('hidden');
-        } else if(answerState.correct === true){
-          explanationEl.textContent = 'Risposta registrata come corretta.';
-          explanationEl.classList.remove('hidden');
-        } else if(answerState.correct === false){
-          explanationEl.textContent = 'Risposta registrata come sbagliata.';
-          explanationEl.classList.remove('hidden');
+          if(answerState.skipped){
+            explanationEl.textContent = 'Questa domanda è stata saltata.';
+            explanationEl.classList.remove('hidden');
+          } else if(answerState.correct === true){
+            explanationEl.textContent = 'Risposta registrata come corretta.';
+            explanationEl.classList.remove('hidden');
+          } else if(answerState.correct === false){
+            explanationEl.textContent = 'Risposta registrata come sbagliata.';
+            explanationEl.classList.remove('hidden');
+          }
         }
       }
     }
@@ -788,7 +919,11 @@
 
         if(index === state.currentIndex) btn.classList.add('current');
         if(a && a.skipped) btn.classList.add('skipped');
-        else if(a && a.id && (a.correct !== null || (typeof a.userAnswer === 'string' && a.userAnswer.trim() !== ''))) {
+        else if(a && a.id && (
+          a.correct !== null ||
+          (typeof a.userAnswer === 'string' && a.userAnswer.trim() !== '') ||
+          typeof a.userAnswer === 'number'
+        )){
           btn.classList.add('answered');
         }
 
@@ -805,6 +940,7 @@
       const answered = state.answers.filter(a =>
         a && a.id && !a.skipped && (
           a.correct !== null ||
+          typeof a.userAnswer === 'number' ||
           (typeof a.userAnswer === 'string' && a.userAnswer.trim() !== '')
         )
       ).length;
@@ -837,7 +973,7 @@
         mcArea.appendChild(btn);
       });
 
-      if(saved && saved.userAnswer !== null && saved.userAnswer !== undefined){
+      if(!state.isSimulation && saved && saved.userAnswer !== null && saved.userAnswer !== undefined){
         const correctIdx = q.answer;
         const selectedIdx = saved.userAnswer;
         Array.from(mcArea.children).forEach((el)=>{
@@ -866,15 +1002,18 @@
     }
 
     openAnswer.addEventListener('input', ()=>{
-      const prev = state.answers[state.currentIndex] || {};
       const q = state.quizQuestions[state.currentIndex];
+      if(!q || q.type !== 'open') return;
+
+      const prev = state.answers[state.currentIndex] || {};
       state.answers[state.currentIndex] = {
         id: q.id,
-        correct: prev.correct ?? null,
+        correct: state.isSimulation ? null : (prev.correct ?? null),
         userAnswer: openAnswer.value,
-        skipped: prev.skipped ?? false,
+        skipped: false,
         viewedSolution: prev.viewedSolution ?? false
       };
+
       if(state.isSimulation){
         renderPalette();
         updateStats();
@@ -882,6 +1021,8 @@
     });
 
     showSolutionBtn.addEventListener('click', ()=>{
+      if(state.isSimulation) return;
+
       const q = state.quizQuestions[state.currentIndex];
       const prev = state.answers[state.currentIndex] || {};
 
@@ -898,11 +1039,6 @@
         openSolution.classList.remove('hidden');
       }
 
-      if(state.isSimulation){
-        renderPalette();
-        updateStats();
-      }
-
       if(q.images && q.images.length){
         openImageFullscreen(q.images[0]);
       } else {
@@ -912,21 +1048,30 @@
 
     skipBtn.addEventListener('click', ()=>{
       const q = state.quizQuestions[state.currentIndex];
+      if(!q) return;
+
       state.answers[state.currentIndex] = {
         id: q.id,
         correct: null,
-        userAnswer: openAnswer.value || '',
+        userAnswer: typeof openAnswer.value === 'string' ? openAnswer.value : '',
         skipped: true,
         viewedSolution: false
       };
       recomputeTracking();
-      renderQuestion();
+
+      if(state.isSimulation){
+        renderQuestion();
+      } else {
+        renderQuestion();
+      }
     });
 
     selfGoodBtn.addEventListener('click', ()=> recordOpenAnswer(true));
     selfBadBtn.addEventListener('click', ()=> recordOpenAnswer(false));
 
     function recordOpenAnswer(isCorrect){
+      if(state.isSimulation) return;
+
       const q = state.quizQuestions[state.currentIndex];
       state.answers[state.currentIndex] = {
         id: q.id,
@@ -951,69 +1096,221 @@
         state.currentIndex++;
         renderQuestion();
       } else {
-        showResults();
+        finishQuiz();
       }
     });
 
     endBtn.addEventListener('click', ()=>{
-      showResults(true);
+      finishQuiz(true);
     });
+
+    function finishQuiz(isPartial = false){
+      stopTimer();
+      recomputeTracking();
+
+      if(state.isSimulation){
+        state.reviewAvailable = true;
+      }
+
+      showResults(isPartial);
+    }
 
     function recomputeTracking(){
       state.incorrectIds = [];
       state.skippedIds = [];
 
-      state.answers.forEach(a => {
-        if(!a || !a.id) return;
+      state.answers.forEach((a, index) => {
+        const q = state.quizQuestions[index];
+        if(!q || !a || !a.id) return;
+
         if(a.skipped){
           if(!state.skippedIds.includes(a.id)) state.skippedIds.push(a.id);
           return;
         }
-        if(a.correct === false){
-          if(!state.incorrectIds.includes(a.id)) state.incorrectIds.push(a.id);
+
+        if(q.type === 'mc'){
+          if(a.correct === false && !state.incorrectIds.includes(a.id)){
+            state.incorrectIds.push(a.id);
+          }
         }
       });
     }
 
     function showResults(isPartial = false){
-      stopTimer();
-      recomputeTracking();
       showScreen('results');
 
       const answered = state.answers.filter(a => a && a.id);
-      const attempted = answered.filter(a => !a.skipped && a.correct !== null);
-      const correct = attempted.filter(a => a.correct === true).length;
-      const wrong = attempted.filter(a => a.correct === false).length;
+      const mcAnswered = answered.filter((a, idx) => {
+        const q = state.quizQuestions[idx];
+        return q && q.type === 'mc' && !a.skipped && a.correct !== null;
+      });
+
+      const correct = mcAnswered.filter(a => a.correct === true).length;
+      const wrong = mcAnswered.filter(a => a.correct === false).length;
       const skipped = answered.filter(a => a.skipped).length;
-      const percent = attempted.length ? Math.round((correct / attempted.length) * 100) : 0;
+      const percent = mcAnswered.length ? Math.round((correct / mcAnswered.length) * 100) : 0;
 
       percentText.textContent = percent + '%';
 
       if(state.isSimulation && state.simulationEndedByTime){
-        scoreSummary.textContent = `Tempo scaduto • Valutate: ${attempted.length} • Corrette: ${correct} • Sbagliate: ${wrong} • Saltate: ${skipped}`;
+        scoreSummary.textContent = `Tempo scaduto • Multiple valutate: ${mcAnswered.length} • Corrette: ${correct} • Sbagliate: ${wrong} • Saltate: ${skipped}`;
       } else if(isPartial){
-        scoreSummary.textContent = `Risultato parziale • Valutate: ${attempted.length} • Corrette: ${correct} • Sbagliate: ${wrong} • Saltate: ${skipped}`;
+        scoreSummary.textContent = `Risultato parziale • Multiple valutate: ${mcAnswered.length} • Corrette: ${correct} • Sbagliate: ${wrong} • Saltate: ${skipped}`;
+      } else if(state.isSimulation){
+        scoreSummary.textContent = `Simulazione completata • Multiple valutate: ${mcAnswered.length} • Corrette: ${correct} • Sbagliate: ${wrong} • Saltate: ${skipped}`;
       } else {
-        scoreSummary.textContent = `Valutate: ${attempted.length} • Corrette: ${correct} • Sbagliate: ${wrong} • Saltate: ${skipped}`;
+        const attempted = answered.filter(a => !a.skipped && a.correct !== null);
+        const openCorrect = attempted.filter((a, idx) => {
+          const q = state.quizQuestions[idx];
+          return q && q.type === 'open' && a.correct === true;
+        }).length;
+        const openWrong = attempted.filter((a, idx) => {
+          const q = state.quizQuestions[idx];
+          return q && q.type === 'open' && a.correct === false;
+        }).length;
+        const totalCorrect = correct + openCorrect;
+        const totalWrong = wrong + openWrong;
+        const totalPercent = attempted.length ? Math.round((totalCorrect / attempted.length) * 100) : 0;
+        percentText.textContent = totalPercent + '%';
+        scoreSummary.textContent = `Valutate: ${attempted.length} • Corrette: ${totalCorrect} • Sbagliate: ${totalWrong} • Saltate: ${skipped}`;
       }
 
-      repeatErrorsBtn.disabled = state.incorrectIds.length === 0 || state.isSimulation;
+      reviewBtn.classList.toggle('hidden', !state.reviewAvailable);
+      repeatErrorsBtn.disabled = state.incorrectIds.length === 0;
     }
 
-    repeatErrorsBtn.addEventListener('click', ()=>{
-      if(state.incorrectIds.length === 0 || state.isSimulation) return;
-
-      const mcErrors = state.allQuestions.filter(q => q.type === 'mc' && state.incorrectIds.includes(q.id));
-      const openErrors = state.allQuestions.filter(q => q.type === 'open' && state.incorrectIds.includes(q.id));
-
-      if(mcErrors.length > 0){
-        selectCategory('mc');
-      } else if(openErrors.length > 0){
-        selectCategory('open');
-      }
-
-      startQuiz(state.incorrectIds);
+    reviewBtn.addEventListener('click', ()=>{
+      renderReview();
+      showScreen('review');
     });
+
+    reviewBackResultsBtn.addEventListener('click', ()=>{
+      showScreen('results');
+    });
+
+    function renderReview(){
+      reviewList.innerHTML = '';
+
+      state.quizQuestions.forEach((q, index) => {
+        const a = state.answers[index] || {};
+        const card = document.createElement('div');
+        let statusClass = 'skipped';
+        let statusText = 'Saltata';
+
+        if(q.type === 'mc'){
+          if(a.correct === true){
+            statusClass = 'correct';
+            statusText = 'Corretta';
+          } else if(a.correct === false){
+            statusClass = 'wrong';
+            statusText = 'Sbagliata';
+          }
+        } else {
+          if(a.skipped){
+            statusClass = 'skipped';
+            statusText = 'Saltata';
+          } else {
+            statusClass = 'correct';
+            statusText = 'Risposta da confrontare';
+          }
+        }
+
+        card.className = `review-item ${statusClass}`;
+
+        let userAnswerHtml = '<em>Nessuna risposta</em>';
+        if(q.type === 'mc'){
+          if(typeof a.userAnswer === 'number' && q.options && q.options[a.userAnswer] !== undefined){
+            userAnswerHtml = q.options[a.userAnswer];
+          } else if(a.skipped){
+            userAnswerHtml = '<em>Saltata</em>';
+          }
+        } else {
+          if(typeof a.userAnswer === 'string' && a.userAnswer.trim() !== ''){
+            userAnswerHtml = escapeHtml(a.userAnswer);
+          } else if(a.skipped){
+            userAnswerHtml = '<em>Saltata</em>';
+          }
+        }
+
+        let correctHtml = '';
+        if(q.type === 'mc'){
+          const correctOption = q.options && q.options[q.answer] !== undefined ? q.options[q.answer] : 'Risposta corretta non disponibile';
+          correctHtml = `
+            <div class="review-block">
+              <div class="review-label">Risposta corretta</div>
+              <div>${escapeHtml(correctOption)}</div>
+            </div>
+          `;
+        } else {
+          correctHtml = `
+            <div class="review-block">
+              <div class="review-label">Soluzione corretta</div>
+              <div>${q.solution ? escapeHtml(q.solution) : '<em>Soluzione non disponibile</em>'}</div>
+              ${q.images && q.images.length ? `<img class="review-image" src="${q.images[0]}" alt="Soluzione grafica domanda ${index + 1}">` : ''}
+            </div>
+          `;
+        }
+
+        const explanationHtml = q.type === 'mc' && q.explanation ? `
+          <div class="review-block">
+            <div class="review-label">Spiegazione</div>
+            <div>${escapeHtml(q.explanation)}</div>
+          </div>
+        ` : '';
+
+        card.innerHTML = `
+          <div class="review-head">
+            <strong>Domanda ${index + 1}</strong>
+            <span class="review-status status-${statusClass}">${statusText}</span>
+          </div>
+
+          <div class="review-block">
+            <div class="review-label">Testo domanda</div>
+            <div>${escapeHtml(q.question)}</div>
+          </div>
+
+          <div class="review-block">
+            <div class="review-label">Tua risposta</div>
+            <div>${userAnswerHtml}</div>
+          </div>
+
+          ${correctHtml}
+          ${explanationHtml}
+        `;
+
+        reviewList.appendChild(card);
+      });
+
+      reviewRepeatErrorsBtn.disabled = state.incorrectIds.length === 0;
+    }
+
+    function startErrorsQuiz(){
+      if(state.incorrectIds.length === 0) return;
+
+      state.mode = 'errors';
+      state.isSimulation = false;
+      state.reviewAvailable = false;
+      hideTimer();
+      paletteWrap.classList.add('hidden');
+
+      const errorQuestions = state.allQuestions.filter(q => state.incorrectIds.includes(q.id));
+      state.quizQuestions = errorQuestions;
+      state.currentIndex = 0;
+      state.answers = Array(state.quizQuestions.length).fill(null).map(() => ({
+        id: null,
+        correct: null,
+        userAnswer: null,
+        skipped: false,
+        viewedSolution: false
+      }));
+      state.skippedIds = [];
+      state.incorrectIds = [];
+      showScreen('quiz');
+      renderQuestion();
+    }
+
+    repeatErrorsBtn.addEventListener('click', startErrorsQuiz);
+    reviewRepeatErrorsBtn.addEventListener('click', startErrorsQuiz);
 
     restartBtn.addEventListener('click', ()=>{
       startQuiz();
@@ -1022,6 +1319,7 @@
     homeBtn.addEventListener('click', ()=>{
       stopTimer();
       hideTimer();
+      state.reviewAvailable = false;
       showScreen('start');
     });
 
@@ -1084,7 +1382,7 @@
           state.timerSeconds = 0;
           updateTimerUI();
           state.simulationEndedByTime = true;
-          showResults();
+          finishQuiz();
         }
       }, 1000);
     }
@@ -1110,8 +1408,18 @@
       timerText.textContent = `${min}:${sec}`;
     }
 
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
     selectCategory('mc');
     loadQuestions();
   </script>
 </body>
+</html>
 </html>
