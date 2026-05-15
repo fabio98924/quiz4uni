@@ -1,0 +1,116 @@
+[
+  {
+    "id": 1,
+    "type": "open",
+    "question": "Disegnare lo schema di una operazione di tornitura cilindrica esterna con utensile avente ψ = 0. Identificare nello schema: utensile, attrezzatura di riferimento e bloccaggio del pezzo, moto di taglio, moto di avanzamento e sezione del truciolo.",
+    "images": ["assets/images/open/1dis.png"]
+  },
+  {
+    "id": 2,
+    "type": "open",
+    "question": "Disegnare un generico profilo di superficie. Identificare su di esso la rugosità totale e ricavare la rugosità media aritmetica attraverso la procedura ISO.",
+    "images": ["assets/images/open/2dis.png"]
+  },
+  {
+    "id": 3,
+    "type": "open",
+    "question": "Disegnare lo schema di una operazione di tornitura di una gola esterna. Identificare nello schema: utensile, attrezzatura di riferimento e bloccaggio del pezzo, moto di taglio, moto di avanzamento e sezione del truciolo.",
+    "images": ["assets/images/open/3dis.png"]
+  },
+  {
+    "id": 4,
+    "type": "open",
+    "question": "Disegnare lo schema di un'operazione di tornitura di una gola interna.",
+    "images": ["assets/images/open/4dis.png"]
+  },
+  {
+    "id": 5,
+    "type": "open",
+    "question": "Disegnare lo schema per la misurazione di parallelismo e paralleleità.",
+    "images": ["assets/images/open/5dis.png"]
+  },
+  {
+    "id": 6,
+    "type": "open",
+    "question": "Disegnare lo schema per la misurazione di una tolleranza di cilindricità su un pezzo snello.",
+    "images": ["assets/images/open/6dis.png"]
+  },
+  {
+    "id": 7,
+    "type": "open",
+    "question": "Disegnare lo schema di una operazione di alesatura (tornitura interna) con utensile avente ψ = 0. Identificare nello schema: utensile, attrezzatura di riferimento e bloccaggio del pezzo, moto di taglio, moto di avanzamento e sezione del truciolo.",
+    "images": ["assets/images/open/7dis.png"]
+  },
+  {
+    "id": 8,
+    "type": "open",
+    "question": "Disegnare uno schema di un’operazione di fresatura a taglio periferico–frontale. Evidenziare nello schema i moti di taglio e avanzamento, profondità di passata e avanzamento a dente.",
+    "images": ["assets/images/open/8dis.png"]
+  },
+  {
+    "id": 9,
+    "type": "open",
+    "question": "Disegnare un’operazione per la realizzazione di una cava per linguette con utensile a 3 tagli identificando i moti di taglio, avanzamento e appostamento.",
+    "images": ["assets/images/open/9dis.png"]
+  },
+  {
+    "id": 10,
+    "type": "open",
+    "question": "Disegnare un’operazione per la realizzazione di una cava per linguette con utensile a due tagli identificando il moto di taglio, avanzamento e appostamento.",
+    "images": ["assets/images/open/10dis.png"]
+  },
+  {
+    "id": 11,
+    "type": "open",
+    "question": "Disegnare un’operazione di rettifica piano tangenziale identificando utensile, montaggio del pezzo sulla macchina, moti di taglio e di avanzamento.",
+    "images": ["assets/images/open/11dis.png"]
+  },
+  {
+    "id": 12,
+    "type": "open",
+    "question": "Disegnare un’operazione di rettifica in tondo per interni identificando utensile, montaggio del pezzo sulla macchina, moti di taglio e di avanzamento.",
+    "images": ["assets/images/open/12dis.png"]
+  },
+  {
+    "id": 13,
+    "type": "open",
+    "question": "Disegnare lo schema di un processo di laminazione tra rulli piani e il diagramma della velocità media del materiale nell’arco di contatto.",
+    "images": ["assets/images/open/13dis.png"]
+  },
+  {
+    "id": 14,
+    "type": "open",
+    "question": "Rappresentare un processo di estrusione e l’andamento della forza.",
+    "images": ["assets/images/open/14dis.png"]
+  },
+  {
+    "id": 15,
+    "type": "open",
+    "question": "Disegnare uno schema della tecnica per saldare di testa due lamiere sottili in P-Al Si. Impostare nello schema la polarità della macchina nell’ipotesi di lavorare in corrente continua.",
+    "images": ["assets/images/open/15dis.png"]
+  },
+  {
+    "id": 16,
+    "type": "open",
+    "question": "Disegnare lo schema di un’operazione di fresatura a taglio periferico.",
+    "images": ["assets/images/open/16dis.png"]
+  },
+  {
+    "id": 17,
+    "type": "open",
+    "question": "Disegnare un piano di divisione possibile per il componente e inserire eventuali stime.",
+    "images": ["assets/images/open/17dis.png"]
+  },
+  {
+    "id": 18,
+    "type": "open",
+    "question": "Disegnare lo schema di un'operazione di fresatura periferico–frontale con diametro dell'utensile maggiore della larghezza del pezzo. Identificare nello schema: i moti, le modalità di taglio (concordanza/opposizione) e la sezione del truciolo.",
+    "images": ["assets/images/open/18dis.png"]
+  },
+  {
+    "id": 19,
+    "type": "open",
+    "question": "Disegnare uno schema di un’operazione di fresatura a taglio periferico in modalità concordanza. Evidenziare nello schema i moti di taglio e avanzamento, profondità di passata e avanzamento a dente.",
+    "images": ["assets/images/open/19dis.png"]
+  }
+]
