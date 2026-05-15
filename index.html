@@ -25,7 +25,7 @@
     }
 
     .wrap{
-      max-width:900px;
+      max-width:950px;
       margin:36px auto;
       padding:28px;
       background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
@@ -146,6 +146,107 @@
       width:0%;
     }
 
+    .stats-bar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin:10px 0 14px;
+    }
+
+    .stat-chip{
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:700;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .stat-chip.answered{
+      background:rgba(22,163,74,0.14);
+      border-color:rgba(22,163,74,0.45);
+      color:#d8ffe4;
+    }
+
+    .stat-chip.skipped{
+      background:rgba(245,158,11,0.14);
+      border-color:rgba(245,158,11,0.45);
+      color:#ffe7b3;
+    }
+
+    .stat-chip.remaining{
+      background:rgba(255,255,255,0.05);
+      border-color:rgba(148,163,184,0.25);
+      color:#dbe7f5;
+    }
+
+    .palette{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(42px,1fr));
+      gap:8px;
+      margin:14px 0 18px;
+    }
+
+    .palette-btn{
+      min-height:42px;
+      padding:8px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:rgba(255,255,255,0.03);
+      color:var(--text);
+      font-weight:700;
+    }
+
+    .palette-btn.current{
+      background:linear-gradient(90deg,var(--accent),#60a5fa);
+      color:#042027;
+      border:none;
+    }
+
+    .palette-btn.answered{
+      background:rgba(22,163,74,0.18);
+      border-color:rgba(22,163,74,0.55);
+      color:#d9ffe4;
+    }
+
+    .palette-btn.skipped{
+      background:rgba(245,158,11,0.16);
+      border-color:rgba(245,158,11,0.45);
+      color:#ffe6b0;
+    }
+
+    .palette-btn.current.answered,
+    .palette-btn.current.skipped{
+      color:#042027;
+    }
+
+    .legend{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:10px;
+    }
+
+    .legend span{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      display:inline-block;
+    }
+
+    .dot.current{ background:var(--accent); }
+    .dot.answered{ background:var(--success); }
+    .dot.skipped{ background:var(--warning); }
+    .dot.empty{ background:#64748b; }
+
     .question-area{
       min-height:160px;
       display:flex;
@@ -243,13 +344,6 @@
     }
 
     .muted{
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    footer{
-      margin-top:18px;
-      text-align:center;
       color:var(--muted);
       font-size:13px;
     }
@@ -364,6 +458,10 @@
       .question-text{
         font-size:17px;
       }
+
+      .palette{
+        grid-template-columns:repeat(5,1fr);
+      }
     }
   </style>
 </head>
@@ -389,9 +487,9 @@
         <div id="startScreen">
           <p class="muted">Scegli il tipo di modalità e avvia il quiz.</p>
           <div class="center">
-            <button class="category-btn primary" data-type="mc" id="btnMC">Scelta multipla</button>
-            <button class="category-btn" data-type="open" id="btnOpen">Domande aperte</button>
-            <button class="category-btn" data-type="sim" id="btnSim">Simulazione</button>
+            <button class="category-btn primary" id="btnMC">Scelta multipla</button>
+            <button class="category-btn" id="btnOpen">Domande aperte</button>
+            <button class="category-btn" id="btnSim">Simulazione</button>
           </div>
           <div class="center">
             <button id="startBtn" class="primary">Avvia quiz</button>
@@ -402,6 +500,23 @@
           <div class="meta">
             <div><strong id="qIndex">1 / 10</strong></div>
             <div class="progress"><i id="progressBar"></i></div>
+          </div>
+
+          <div id="paletteWrap" class="hidden">
+            <div class="stats-bar">
+              <div class="stat-chip answered">Compilate: <span id="answeredCount">0</span></div>
+              <div class="stat-chip skipped">Saltate: <span id="skippedCount">0</span></div>
+              <div class="stat-chip remaining">Rimanenti: <span id="remainingCount">0</span></div>
+            </div>
+
+            <div class="legend">
+              <span><i class="dot current"></i> Corrente</span>
+              <span><i class="dot answered"></i> Compilata</span>
+              <span><i class="dot skipped"></i> Saltata</span>
+              <span><i class="dot empty"></i> Vuota</span>
+            </div>
+
+            <div id="questionPalette" class="palette"></div>
           </div>
 
           <div class="question-area">
@@ -448,8 +563,6 @@
           </div>
         </div>
       </main>
-
-      <footer></footer>
     </div>
   </div>
 
@@ -517,6 +630,12 @@
     const restartBtn = document.getElementById('restartBtn');
     const homeBtn = document.getElementById('homeBtn');
 
+    const paletteWrap = document.getElementById('paletteWrap');
+    const questionPalette = document.getElementById('questionPalette');
+    const answeredCount = document.getElementById('answeredCount');
+    const skippedCount = document.getElementById('skippedCount');
+    const remainingCount = document.getElementById('remainingCount');
+
     const imageOverlay = document.getElementById('imageOverlay');
     const overlayImage = document.getElementById('overlayImage');
     const overlayMessage = document.getElementById('overlayMessage');
@@ -566,9 +685,11 @@
         state.quizQuestions = [...mcSelected, ...openSelected];
         state.timerSeconds = 45 * 60;
         startTimer();
+        paletteWrap.classList.remove('hidden');
       } else {
         state.isSimulation = false;
         hideTimer();
+        paletteWrap.classList.add('hidden');
         const pool = state.allQuestions.filter(q => q.type === state.mode);
         state.quizQuestions = fromIds?.length ? pool.filter(q => fromIds.includes(q.id)) : [...pool];
         shuffle(state.quizQuestions);
@@ -615,6 +736,8 @@
         navInfo.textContent = state.currentIndex < 4
           ? 'Sezione 1: Scelta multipla'
           : 'Sezione 2: Domande aperte';
+        renderPalette();
+        updateStats();
       } else {
         navInfo.textContent = q.type === 'mc' ? 'Domanda a scelta multipla' : 'Domanda aperta';
       }
@@ -653,6 +776,45 @@
           explanationEl.classList.remove('hidden');
         }
       }
+    }
+
+    function renderPalette(){
+      questionPalette.innerHTML = '';
+      state.quizQuestions.forEach((q, index)=>{
+        const a = state.answers[index];
+        const btn = document.createElement('button');
+        btn.className = 'palette-btn';
+        btn.textContent = index + 1;
+
+        if(index === state.currentIndex) btn.classList.add('current');
+        if(a && a.skipped) btn.classList.add('skipped');
+        else if(a && a.id && (a.correct !== null || (typeof a.userAnswer === 'string' && a.userAnswer.trim() !== ''))) {
+          btn.classList.add('answered');
+        }
+
+        btn.addEventListener('click', ()=>{
+          state.currentIndex = index;
+          renderQuestion();
+        });
+
+        questionPalette.appendChild(btn);
+      });
+    }
+
+    function updateStats(){
+      const answered = state.answers.filter(a =>
+        a && a.id && !a.skipped && (
+          a.correct !== null ||
+          (typeof a.userAnswer === 'string' && a.userAnswer.trim() !== '')
+        )
+      ).length;
+
+      const skipped = state.answers.filter(a => a && a.id && a.skipped).length;
+      const remaining = state.quizQuestions.length - answered - skipped;
+
+      answeredCount.textContent = answered;
+      skippedCount.textContent = skipped;
+      remainingCount.textContent = remaining >= 0 ? remaining : 0;
     }
 
     function renderOptions(q, saved){
@@ -713,6 +875,10 @@
         skipped: prev.skipped ?? false,
         viewedSolution: prev.viewedSolution ?? false
       };
+      if(state.isSimulation){
+        renderPalette();
+        updateStats();
+      }
     });
 
     showSolutionBtn.addEventListener('click', ()=>{
@@ -730,6 +896,11 @@
       if(q.solution){
         openSolution.textContent = q.solution;
         openSolution.classList.remove('hidden');
+      }
+
+      if(state.isSimulation){
+        renderPalette();
+        updateStats();
       }
 
       if(q.images && q.images.length){
