@@ -17,11 +17,8 @@
   {"id":16,"type":"mc","question":"La tenacità di una lega X12Cr17 esprime:","options":["Dipende dalla elevata percentuale di Cromo che influenza l’incrudimento","È elevata grazie a un contenuto di carbonio pari al 12%","Esprime l’energia accumulata dal materiale per unità di volume prima che intervenga rottura","Rappresenta l’energia specifica in [J/mm2] accumulata nell’impatto"],"answer":2,"explanation":""},
   {"id":17,"type":"mc","question":"In una prova di trazione, la tenacità:","options":["È rappresentata dall’energia specifica per portare a rottura il materiale","Rappresenta l’energia che un materiale può assorbire a seguito di un urto","È l’area sottesa dal diagramma energia di impatto – allungamento","È calcolata a partire dal punto di snervamento dove il materiale esaurisce le sue proprietà elastiche"],"answer":0,"explanation":""},
   {"id":18,"type":"mc","question":"Una prova Charpy con mazza 15 kg da 2 m e risalita 640 mm: Qual è la resilienza?","options":["8,6 J/mm2","3,2 J/mm2","2,5 J/mm2","10,5 J/mm2"],"answer":2,"explanation":"Sezione = 10 x 8 = 80 mm2
-Hf = 640 mm = 0,64 m
-Epotenziale iniziale = Epotenziale finale + k
-
+Hf = 640 mm = 0,64 m Epotenziale iniziale = Epotenziale finale + k
 Energia impiegata nell’impatto k = mghi – mghf = mg( hi -hf) = 15 ∙ 9,81 (2-0,64) = 200,124 J
-
 200,124/80=200,124/10𝑥8= 2,5 J/mm2"},
   {"id":19,"type":"mc","question":"L’isteresi elastica di un materiale:","options":["è indipendente dal numero di cicli di carico applicati","determina la propagazione delle linee di spiaggia fino alla rottura","definisce il livello di energia accumulata a seguito delle precedenti sollecitazioni","è identificato dal limite di rottura a fatica"],"answer":2,"explanation":""},
   {"id":20,"type":"mc","question":"La prova Erichsen determina:","options":["il massimo incurvamento che una lamiera può sopportare","la profondità di penetrazione del punzone prima che intervenga rottura","la forza massima per trasformare la lamiera in un prodotto cavo","la pressione che il punzone deve esercitare affinché la lamiera si deformi senza che intervenga rottura"],"answer":1,"explanation":""},
